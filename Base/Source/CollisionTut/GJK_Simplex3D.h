@@ -11,6 +11,7 @@ Date: 31/12/17
 /***************************************************************************************************************/
 class GJK_Simplex_3D
 {
+public:
 	Vector3 MD_points[64];	//36
 
 	//Simplex data---------------------------------------------------------//
@@ -20,10 +21,12 @@ class GJK_Simplex_3D
 	Vector3 vertices[3];
 	Vector3 newPoint, prev_newPoint;
 	Mesh* simplexMesh;
+	float lastFew_dist[7];
 
 	//closest points-------------------------------------------------------//
 	float closestDist;
-	int fuck;
+	bool infinite_loop;
+
 	//static data----------------------------------------------------------//
 	static Vector3 ao, ab, contactPt;	//origin to AB projection
 	Vector3 tmp_points[3];	//store new dirs from their respective edges

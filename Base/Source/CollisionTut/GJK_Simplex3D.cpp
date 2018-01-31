@@ -11,7 +11,6 @@ GJK_Simplex_3D::GJK_Simplex_3D()
 {
 	dotProd = largestDotProd = largestDotProd_index = 0.f;
 	simplexMesh = NULL;
-	fuck = 0;
 }
 
 GJK_Simplex_3D::~GJK_Simplex_3D()
@@ -38,29 +37,18 @@ int GJK_Simplex_3D::GetSupportingVertice(CD_Polygon_3D& poly, Vector3 dir)
 	dotProd = -10.f;
 	largestDotProd = -10.f;
 	largestDotProd_index = -1;
-	float dot_prodList[8];
 
 	//get vertice with largest dot product
 	for (int i = 0; i < 8; ++i)
 	{
 		dotProd = (poly.pointList[i] - poly.shapePos).Dot(dir);
-		dot_prodList[i] = dotProd;
+
 		if (dotProd > largestDotProd)
 		{
 			largestDotProd = dotProd;
 			largestDotProd_index = i;
 		}
 	}
-
-	int dupCount = 0;
-
-	for (int i = 0; i < 8; ++i)
-	{
-		if (largestDotProd == dot_prodList[i])
-			dupCount++;
-	}
-	cout << "DC: " << dupCount - 1 << endl;
-
 	return largestDotProd_index;
 }
 
@@ -294,7 +282,6 @@ void GJK_Simplex_3D::GetClosestPoints_Start(CD_Polygon_3D& A, CD_Polygon_3D& B)
 
 	//loop-------------------------------------------------------------//
 	newPoint = GetNewLast(dir, A, B);	//C
-	cout << "TAKE NOTE OF DUPLICATE COUNT------------------------------------------------" << endl;
 }
 
 /*********************************************************************************************************
@@ -306,24 +293,21 @@ Check if intersection FIRST
 To do:
 Remove face origin check if found redundant
 /*********************************************************************************************************/
-bool finishedGJK = false;
 void GJK_Simplex_3D::GetClosestPoints(CD_Polygon_3D& A, CD_Polygon_3D& B)
 {
 	//if (finishedGJK)
 	//	return;
+	infinite_loop = false;
 
 	int infinite_counter = 0;
-	/*while (true)
-	{*/
+	while (true)
+	{
 
 		//terminating condition--------------------------------------------//
 		if (newPoint.Same(vertices[0]) || newPoint.Same(vertices[1])
 			|| newPoint.Same(vertices[2]))
 		{
 			closestDist = closestPointToOrigin(vertices[0], vertices[1], vertices[2]).Length();
-			finishedGJK = true;
-			
-			cout << "closestDist: " << closestDist << endl;
 
 			if (simplexMesh)
 				delete simplexMesh;
@@ -332,8 +316,6 @@ void GJK_Simplex_3D::GetClosestPoints(CD_Polygon_3D& A, CD_Polygon_3D& B)
 
 			return;
 		}
-		else
-			cout << "closestDist b4: " << closestPointToOrigin(vertices[0], vertices[1], vertices[2]).Length() << endl;
 
 		//test out the following triangles---------------------------------//
 		Vector3 new_ab = closestPointToOrigin(newPoint, vertices[0], vertices[1]);
@@ -446,16 +428,31 @@ void GJK_Simplex_3D::GetClosestPoints(CD_Polygon_3D& A, CD_Polygon_3D& B)
 		//loop-------------------------------------------------------------//
 		newPoint = GetNewLast(dir, A, B);
 
-		fuck++;
-
-		if (fuck == 2)
-			newPoint = MD_points[0];
-
 		infinite_counter++;
 
 		//rare case the algo will oscillate around closest solution--------// 
-		if (infinite_counter > 29)
-			cout << "ASDASDASD" << endl;
+		if (infinite_counter > 15)
+		{
+			//take a small sampling of the past few results (7)
+			if (infinite_counter < 23)
+			{
+				lastFew_dist[infinite_counter - 16] = closestPointToOrigin(vertices[0], vertices[1], vertices[2]).LengthSquared();
+			}
+			else
+			{
+				//take the shortest dist. from this sampling
+				float shortestDist = lastFew_dist[0];
+				for (int i = 1; i < 7; ++i)
+				{
+					if (shortestDist > lastFew_dist[i])
+						shortestDist = lastFew_dist[i];
+				}
+				closestDist = sqrt(shortestDist);
+				infinite_loop = true;
+				return;
+			}
+		}
+	}
 
 	//remove if looping----------------------------------------------------//
 	if (simplexMesh)

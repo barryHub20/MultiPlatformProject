@@ -187,9 +187,8 @@ void Scene_Continuous::OBB_V_OBB_3D_Init()
 	poly_3d_1.Init(Vector3(-30, 0, 0), Vector3(50, 100, 120), Vector3(1, 0, 0), false, Color(0, 0, 255));
 	poly_3d_2.Init(Vector3(70, 0, 0), Vector3(50, 50, 50), Vector3(1, 0, 0), false, Color(0, 0, 255));
 
-	poly_3d_1.yawRot(200.6f);
+	poly_3d_1.yawRot(205.f);
 	poly_3d_1.pitchRot(12.0f);
-	//poly_3d_1.yawRot(211.6f);
 	poly_3d_1.RecalculatePoints();
 
 	poly_3d_1.RecalculatePoints();
@@ -210,28 +209,36 @@ void Scene_Continuous::OBB_V_OBB_3D_Update()
 	CU::view.camera.UpdateInput(CU::dt * 2.f);
 
 	//transformation-------------------------------------------------------------//
-	/*if (GetAsyncKeyState('E'))
+	bool key_pressed = false;
+	if (GetAsyncKeyState('E'))
+	{
+		key_pressed = true;
 		poly_3d_1.yawRot(speed * 0.1f);
+	}
 
 	if (GetAsyncKeyState('R'))
+	{
+		key_pressed = true;
 		poly_3d_1.pitchRot(speed);
-	cout << poly_3d_1.pitch << endl;*/
+	}
+
 	/*if (GetAsyncKeyState('Y'))
 		poly_3d_2.yawRot(speed);
 	if (GetAsyncKeyState('U'))
 		poly_3d_2.pitchRot(speed);*/
 	
-	if (stepThru_timer <= 0.0)
-	{
-		if (GetAsyncKeyState('Y'))
-		{
-			//ORDER IS IMPORTANT
-			gjk_simplex_3D.GetClosestPoints(poly_3d_1, poly_3d_2);
-			stepThru_timer = 0.2;
-		}
-	}
-	else
-		stepThru_timer -= CU::dt;
+	//step through---------------------------------------------------------------//
+	//if (stepThru_timer <= 0.0)
+	//{
+	//	if (GetAsyncKeyState('Y'))
+	//	{
+	//		//ORDER IS IMPORTANT
+	//		gjk_simplex_3D.GetClosestPoints(poly_3d_1, poly_3d_2);
+	//		stepThru_timer = 0.2;
+	//	}
+	//}
+	//else
+	//	stepThru_timer -= CU::dt;
 
 	if (GetAsyncKeyState('U'))
 		show_3d_shapes = true;
@@ -247,11 +254,19 @@ void Scene_Continuous::OBB_V_OBB_3D_Update()
 	if (GetAsyncKeyState('H'))
 		poly_3d_1.Strafe(1.f);*/
 
-	//actual implementation
-	/*poly_3d_1.RecalculatePoints();
+	//actual implementation------------------------------------------------------//
+	poly_3d_1.RecalculatePoints();
 	poly_3d_2.RecalculatePoints();
 	gjk_simplex_3D.GetClosestPoints_Start(poly_3d_1, poly_3d_2);
-	gjk_simplex_3D.GetClosestPoints(poly_3d_1, poly_3d_2);*/
+	gjk_simplex_3D.GetClosestPoints(poly_3d_1, poly_3d_2);
+
+	/*if (key_pressed)
+	{
+		if (!gjk_simplex_3D.infinite_loop)
+			cout << "closestDist: " << gjk_simplex_3D.closestDist << endl;
+		else
+			cout << "closestDist (inf. loop): " << gjk_simplex_3D.closestDist << endl;
+	}*/
 }
 
 void Scene_Continuous::OBB_V_OBB_3D_Draw()
@@ -260,16 +275,13 @@ void Scene_Continuous::OBB_V_OBB_3D_Draw()
 	CU::view.Pre_DrawMesh(Vector3(0,0,0), Vector3(1700, 1700, 1700), CU::axes);
 	CU::axes->Draw();
 
-	//CU::view.Pre_DrawMesh(Vector3(0, 0, 0), Vector3(7, 7, 7), CU::sphere_dark_green);
-	//CU::sphere_dark_green->Draw();
-
 	if (show_3d_shapes)
 	{
 		poly_3d_1.Draw();
 		poly_3d_2.Draw();
 	}
 
-	gjk_simplex_3D.Draw();
+	//gjk_simplex_3D.Draw();
 }
 
 /*********************************************************************************************************
