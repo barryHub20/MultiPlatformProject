@@ -1,0 +1,9 @@
+Android-Wrapper/
+*.zip
+*.sln
+*.db
+Windows-Wrapper/Multi-Platform/.vs/
+Windows-Wrapper/Multi-Platform/Debug/
+Windows-Wrapper/Multi-Platform/Multi-Platform/Debug/
+*.filters
+*.vcxproj
