@@ -187,8 +187,8 @@ void Scene_Continuous::OBB_V_OBB_3D_Init()
 	poly_3d_1.Init(Vector3(-30, 0, 0), Vector3(50, 100, 120), Vector3(1, 0, 0), false, Color(0, 0, 255));
 	poly_3d_2.Init(Vector3(70, 0, 0), Vector3(50, 50, 50), Vector3(1, 0, 0), false, Color(0, 0, 255));
 
-	poly_3d_1.yawRot(205.f);
-	poly_3d_1.pitchRot(12.0f);
+	poly_3d_1.yawRot(0.f);
+	poly_3d_1.pitchRot(0.0f);
 	poly_3d_1.RecalculatePoints();
 
 	poly_3d_1.RecalculatePoints();
@@ -281,7 +281,7 @@ void Scene_Continuous::OBB_V_OBB_3D_Draw()
 		poly_3d_2.Draw();
 	}
 
-	//gjk_simplex_3D.Draw();
+	gjk_simplex_3D.Draw();
 }
 
 /*********************************************************************************************************

@@ -26,6 +26,10 @@ public:
 	//closest points-------------------------------------------------------//
 	float closestDist;
 	bool infinite_loop;
+	int shapeA_MDpoint, shapeB_MDpoint;
+	int shapeA_MDpointA, shapeB_MDpointA;
+	int shapeA_MDpointB, shapeB_MDpointB;
+	int shapeA_MDpointC, shapeB_MDpointC;
 
 	//static data----------------------------------------------------------//
 	static Vector3 ao, ab, contactPt;	//origin to AB projection
