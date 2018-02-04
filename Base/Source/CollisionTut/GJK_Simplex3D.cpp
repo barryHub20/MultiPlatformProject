@@ -248,110 +248,10 @@ int GJK_Simplex_3D::GetMin(float a, float b, float c)
 }
 
 /*********************************************************************************************************
-primitive way of getting Barycentric coords.
-https://www.gamedev.net/forums/topic/621445-barycentric-coordinates-c-code-check/
-/*********************************************************************************************************/
-//compute the area of a triangle using Heron's formula
-float triarea(float a, float b, float c)
-{
-	float s = (a + b + c) / 2.0;
-	float area = sqrt(fabs(s*(s - a)*(s - b)*(s - c)));
-	return area;
-}
-
-// compute the distance between two 2d points
-float dist(float x0, float y0, float z0, float x1, float y1, float z1)
-{
-	float a = x1 - x0;
-	float b = y1 - y0;
-	float c = z1 - z0;
-	return sqrt(a*a + b*b + c*c);
-}
-
-// calculate barycentric coordinates
-// triangle 1st vertex: x0,y0,z0
-// triangle 2nd vertex: x1,y1,z1
-//  triangle 3rd vertex: x2,y2,z2
-// point inside triangle: vx, vy,vz
-// *u,*v,*w are the coordinates returned
-
-void barycent(float x0, float y0, float z0, float x1, float y1, float z1, float x2, float y2, float z2,
-	float vx, float vy, float vz,
-	float *u, float *v, float *w)
-{
-
-	// compute the area of the big triangle
-	float a = dist(x0, y0, z0, x1, y1, z1);
-	float b = dist(x1, y1, z1, x2, y2, z2);
-	float c = dist(x2, y2, z2, x0, y0, z0);
-	float totalarea = triarea(a, b, c);
-
-	// compute the distances from the outer vertices to the inner vertex
-	float length0 = dist(x0, y0, z0, vx, vy, vz);
-	float length1 = dist(x1, y1, z1, vx, vy, vz);
-	float length2 = dist(x2, y2, z2, vx, vy, vz);
-
-	// divide the area of each small triangle by the area of the big triangle
-	*u = triarea(b, length1, length2) / totalarea;
-	*v = triarea(c, length0, length2) / totalarea;
-	*w = triarea(a, length0, length1) / totalarea;
-}
-
-/*********************************************************************************************************
 compute the closest points between 2 3D polygons
 /*********************************************************************************************************/
 void GJK_Simplex_3D::computeClosestPoints(CD_Polygon_3D& A, CD_Polygon_3D& B)
 {
-	//edge1 = (vertices[1] - vertices[0]).Normalized();
-	//edge2 = (vertices[2] - vertices[0]).Normalized();
-
-	//Vector3 rayOrigin;	//origin 0,0,0
-	//Vector3 rayVector = edge2.Cross(edge1);	//compute normal
-
-	////point towards origin---------------------------------------------//
-	//if (rayVector.Dot(-vertices[0]) < 0.f)
-	//	rayVector *= -1.f;
-
-	//h = rayVector.Cross(edge2);
-	//a = edge1.Dot(h);
-
-	//if (a > -Math::EPSILON && a < Math::EPSILON)
-	//{
-	//	cout << "a" << endl;
-	//	return;
-	//}
-
-	//f = 1.f / a;
-	//s = (rayOrigin - vertices[0]).Normalized();
-	//u = f * s.Dot(h);	//lambda 1
-
-	//if (u < 0.f || u > 1.f)
-	//{
-	//	cout << "u" << endl;
-	//	return;
-	//}
-
-	//q = s.Cross(edge1);
-	//v = f * rayVector.Dot(q);	//lambda 2
-
-	//if (v < 0.f || v + u > 1.f)
-	//{
-	//	cout << "u + v" << endl;
-	//	return;
-	//}
-	//
-
-	//closest points---------------------------------------------------//
-	//float r1, r2, r3; // barycentric coordinates
-	//barycent(vertices[0].x, vertices[0].y, vertices[0].z, vertices[1].x, 
-	//	vertices[1].y, vertices[1].z, vertices[2].x, vertices[2].y, vertices[2].z, 
-	//	triangle_intersectPt.x, triangle_intersectPt.y, triangle_intersectPt.z, &r1, &r2, &r3);
-
-	//Vector3 shapeB_closest = (r1 * B.pointList[shapeB_MDpointB]) +
-	//(r2 * B.pointList[shapeB_MDpointB]) + (r3 * B.pointList[shapeB_MDpointC]);
-	//edges_intersectPt[0] = shapeB_closest;
-
-	//cout << r1 + r2 + r3 << endl;
 }
 
 /*********************************************************************************************************
@@ -415,7 +315,7 @@ void GJK_Simplex_3D::GetClosestPoints(CD_Polygon_3D& A, CD_Polygon_3D& B)
 			|| newPoint.Same(vertices[2]))
 		{
 			closestDist = closestPointToOrigin(vertices[0], vertices[1], vertices[2]).Length();
-			cout << closestDist << endl;
+			//cout << closestDist << endl;
 			if (simplexMesh)
 				delete simplexMesh;
 			simplexMesh = new Mesh();
