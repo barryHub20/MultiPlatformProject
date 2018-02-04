@@ -431,12 +431,12 @@ void GJK_Simplex_3D::GetClosestPoints(CD_Polygon_3D& A, CD_Polygon_3D& B)
 		infinite_counter++;
 
 		//rare case the algo will oscillate around closest solution--------// 
-		if (infinite_counter > 15)
+		if (infinite_counter > 10)
 		{
 			//take a small sampling of the past few results (7)
-			if (infinite_counter < 23)
+			if (infinite_counter < 18)
 			{
-				lastFew_dist[infinite_counter - 16] = closestPointToOrigin(vertices[0], vertices[1], vertices[2]).LengthSquared();
+				lastFew_dist[infinite_counter - 11] = closestPointToOrigin(vertices[0], vertices[1], vertices[2]).LengthSquared();
 			}
 			else
 			{
@@ -449,7 +449,7 @@ void GJK_Simplex_3D::GetClosestPoints(CD_Polygon_3D& A, CD_Polygon_3D& B)
 				}
 				closestDist = sqrt(shortestDist);
 				infinite_loop = true;
-				return;
+				break;
 			}
 		}
 	}
