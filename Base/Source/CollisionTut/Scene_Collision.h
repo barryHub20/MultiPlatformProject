@@ -33,11 +33,6 @@ class Scene_Continuous : public Scene
 	//OBB---------------------------------------//
 	CD_Polygon new_poly1, new_poly1_projected, new_poly1_final, new_poly2;
 
-	//3D----------------------------------------//
-	CD_Polygon_3D poly_3d_1, poly_3d_2, poly_3d_1_projected;
-	double gen_mesh_timer;
-	bool show_mesh;
-
 	//GJK 2D------------------------------------//
 	CD_Polygon gjk_2d_poly_1, gjk_2d_poly_2, gjk_2d_poly_1_projected, gjk_2d_poly_1_final;
 	GJK_Simplex_2D gjk_simplex;
@@ -52,6 +47,7 @@ class Scene_Continuous : public Scene
 	bool intersects_wTri;
 
 	//GJK 3D------------------------------------//
+	CD_Polygon_3D poly_3d_1, poly_3d_2, poly_3d_1_projected;
 	GJK_Simplex_3D gjk_simplex_3D;
 
 	//controls

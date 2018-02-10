@@ -27,6 +27,7 @@ void CD_Polygon_3D::Init(Vector3 shapePos, Vector3 shapeScale, Vector3 dir, bool
 	this->yaw = this->pitch = this->roll = 0.f;
 	w = x = z = rot_w = rot_x = rot_z = 0.f;
 	y = rot_y = 1.f;
+	this->projectorShape = projectorShape;
 
 	//render---------------------------------------------------------------------//
 	mesh = new Mesh();
@@ -35,16 +36,54 @@ void CD_Polygon_3D::Init(Vector3 shapePos, Vector3 shapeScale, Vector3 dir, bool
 
 void CD_Polygon_3D::CopyFrom(CD_Polygon_3D& copyFromMe)
 {
+	//var------------------------------------------------------------------------//
+	this->shapePos = copyFromMe.shapePos;
+	this->shapeScale = copyFromMe.shapeScale;
+	this->original_dir = copyFromMe.original_dir;
+	this->dir_prime = copyFromMe.dir_prime;
+	this->up = copyFromMe.up;
+	this->right = copyFromMe.right;
+	this->yaw = copyFromMe.yaw;
+	this->pitch = copyFromMe.pitch;
+	this->roll = copyFromMe.roll;
+	this->w = copyFromMe.w;
+	this->x = copyFromMe.x;
+	this->z = copyFromMe.z;
+	this->rot_w = copyFromMe.rot_w;
+	this->rot_x = copyFromMe.rot_x;
+	this->rot_z = copyFromMe.rot_z;
+	this->y = copyFromMe.y;
+	this->rot_y = copyFromMe.rot_y;
 
+	for (int i = 0; i < 8; ++i)
+	{
+		pointList[i] = copyFromMe.pointList[i];
+		pointNormalList[i] = copyFromMe.pointNormalList[i];
+	}
+}
+
+
+/*********************************************************************************************************
+project shape
+/*********************************************************************************************************/
+void CD_Polygon_3D::ProjectShape(float projVel_Mag, Vector3 projRot)
+{
+}
+
+/*********************************************************************************************************
+project + move shape
+/*********************************************************************************************************/
+void CD_Polygon_3D::ProjectObstacle(float projVel_Mag, Vector3 projRot)
+{
 }
 
 void CD_Polygon_3D::Draw()
 {
 	//cuboid-----------------------------------------------------------------------------//
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	CU::view.Pre_DrawMesh(shapePos, rot_w, Vector3(rot_x, rot_y, rot_z), Vector3(1,1,1), mesh);
 	mesh->Draw();
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	//for (int i = 0; i < 8; ++i)
 	//{

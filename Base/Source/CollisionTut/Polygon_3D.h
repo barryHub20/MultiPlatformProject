@@ -28,6 +28,13 @@ public:
 	//render purposes---------------------------------------------------//
 	Mesh* mesh;
 
+	//projection--------------------------------------------------------//
+	bool projectorShape;	//is this shape meant for projection?
+	Vector3 projDir, projRot;
+	float projMag;
+	float av;	//angular velocity
+	float r;	//radius
+
 	//CD==============================================================================//
 	CD_Polygon_3D();
 	~CD_Polygon_3D();
@@ -38,6 +45,9 @@ public:
 	void Draw();
 
 	//Transform=======================================================================//
+	void ProjectShape(float projVel_Mag, Vector3 projRot);
+	void ProjectObstacle(float projVel_Mag, Vector3 projRot);
+
 	void RecalculatePoints();
 	void ToQuaternion();
 	

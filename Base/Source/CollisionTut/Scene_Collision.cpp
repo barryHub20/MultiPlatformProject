@@ -46,7 +46,10 @@ void Scene_Continuous::Tmp_Draw()
 void Scene_Continuous::Tmp_DrawOnScreen()
 {
 	CU::view.SetShader(TEXT_SHADER);
-	CU::view.RenderText("CONTINUOUS", Vector2(-190, 130), 1.f, Color(5, 242, 230));
+	CU::view.StartRendering2D_onScreen();
+	ss.str("");
+	ss << "Dist: " << gjk_simplex_3D.closestDist;
+	CU::view.RenderText(ss.str(), Vector2(-190, 130), 1.f, Color(22, 93, 186));
 
 	//render text
 	ss.str("");
@@ -162,7 +165,7 @@ void Scene_Continuous::OBB_V_OBB_Update()
 	new_poly1_final.RecalculatePoints();
 
 	//collision check
-	CU::discrete_col.start_OBB_V_OBB2(new_poly1, new_poly2, new_poly1_projected);
+	//CU::discrete_col.start_OBB_V_OBB2(new_poly1, new_poly2, new_poly1_projected);
 }
 
 void Scene_Continuous::OBB_V_OBB_Draw()
@@ -183,23 +186,21 @@ void Scene_Continuous::OBB_V_OBB_Draw()
 /*********************************************************************************************************/
 void Scene_Continuous::OBB_V_OBB_3D_Init()
 {
-	show_mesh = false;
-	poly_3d_1.Init(Vector3(-30, 0, 0), Vector3(50, 100, 120), Vector3(1, 0, 0), false, Color(0, 0, 255));
+	poly_3d_1.Init(Vector3(-55, 0, 0), Vector3(50, 100, 120), Vector3(1, 0, 0), false, Color(0, 0, 255));
+	poly_3d_1_projected.Init(Vector3(-30, 0, 0), Vector3(50, 100, 120), Vector3(1, 0, 0), true, Color(0, 0, 255));
 	poly_3d_2.Init(Vector3(70, 0, 0), Vector3(50, 50, 50), Vector3(1, 0, 0), false, Color(0, 0, 255));
 
-	poly_3d_1.yawRot(0.f);
-	poly_3d_1.pitchRot(0.0f);
-	poly_3d_1.RecalculatePoints();
+	poly_3d_1.yawRot(58.8975f);
+	poly_3d_1.pitchRot(20.0f);
 
 	poly_3d_1.RecalculatePoints();
 	poly_3d_2.RecalculatePoints();
 
-	//start the GJK iteration
-	gjk_simplex_3D.GetClosestPoints_Start(poly_3d_1, poly_3d_2);
+	//project poly 1-------------------------------------------------------------//
+	/*poly_3d_1.ProjectShape(Vector3(-50.f, -80.f, 0.f), 26.f);
+	poly_3d_2.ProjectObstacle(Vector3(0.f, 0.f, 0.f), 100.f);*/
 }
 
-double stepThru_timer = 0.2;
-bool show_3d_shapes = false;
 void Scene_Continuous::OBB_V_OBB_3D_Update()
 {
 	float speed = 150.f * CU::dt;
@@ -209,41 +210,26 @@ void Scene_Continuous::OBB_V_OBB_3D_Update()
 	CU::view.camera.UpdateInput(CU::dt * 2.f);
 
 	//transformation-------------------------------------------------------------//
-	bool key_pressed = false;
 	if (GetAsyncKeyState('E'))
 	{
-		key_pressed = true;
-		poly_3d_1.yawRot(speed * 0.1f);
+		poly_3d_1.yawRot(speed * 0.01f);
 	}
-
-	if (GetAsyncKeyState('R'))
-	{
-		key_pressed = true;
-		poly_3d_1.pitchRot(speed);
-	}
+	/*poly_3d_1.yawRot(speed * 0.1f);
+	poly_3d_2.yawRot(speed * 0.1f);*/
+	//if (GetAsyncKeyState('R'))
+	//{
+	//	poly_3d_1.pitchRot(speed);
+	//}
 
 	/*if (GetAsyncKeyState('Y'))
 		poly_3d_2.yawRot(speed);
 	if (GetAsyncKeyState('U'))
 		poly_3d_2.pitchRot(speed);*/
-	
-	//step through---------------------------------------------------------------//
-	//if (stepThru_timer <= 0.0)
-	//{
-	//	if (GetAsyncKeyState('Y'))
-	//	{
-	//		//ORDER IS IMPORTANT
-	//		gjk_simplex_3D.GetClosestPoints(poly_3d_1, poly_3d_2);
-	//		stepThru_timer = 0.2;
-	//	}
-	//}
-	//else
-	//	stepThru_timer -= CU::dt;
 
-	if (GetAsyncKeyState('U'))
+	/*if (GetAsyncKeyState('U'))
 		show_3d_shapes = true;
 	if (GetAsyncKeyState('I'))
-		show_3d_shapes = false;
+		show_3d_shapes = false;*/
 
 	/*if (GetAsyncKeyState('T'))
 		poly_3d_1.Forward(1.f);
@@ -257,16 +243,8 @@ void Scene_Continuous::OBB_V_OBB_3D_Update()
 	//actual implementation------------------------------------------------------//
 	poly_3d_1.RecalculatePoints();
 	poly_3d_2.RecalculatePoints();
-	gjk_simplex_3D.GetClosestPoints_Start(poly_3d_1, poly_3d_2);
+	
 	gjk_simplex_3D.GetClosestPoints(poly_3d_1, poly_3d_2);
-
-	/*if (key_pressed)
-	{
-		if (!gjk_simplex_3D.infinite_loop)
-			cout << "closestDist: " << gjk_simplex_3D.closestDist << endl;
-		else
-			cout << "closestDist (inf. loop): " << gjk_simplex_3D.closestDist << endl;
-	}*/
 }
 
 void Scene_Continuous::OBB_V_OBB_3D_Draw()
@@ -275,11 +253,8 @@ void Scene_Continuous::OBB_V_OBB_3D_Draw()
 	CU::view.Pre_DrawMesh(Vector3(0,0,0), Vector3(1700, 1700, 1700), CU::axes);
 	CU::axes->Draw();
 
-	if (show_3d_shapes)
-	{
-		poly_3d_1.Draw();
-		poly_3d_2.Draw();
-	}
+	poly_3d_1.Draw();
+	poly_3d_2.Draw();
 
 	gjk_simplex_3D.Draw();
 }
@@ -319,7 +294,7 @@ void Scene_Continuous::GJK_2D_Update()
 	float speed = 150.f * CU::dt;
 
 	//controls PC----------------------------------------------------------------//
-	if (GetAsyncKeyState('W'))
+	/*if (GetAsyncKeyState('W'))
 		gjk_2d_poly_1.Translate(0, speed, 0);
 	if (GetAsyncKeyState('S'))
 		gjk_2d_poly_1.Translate(0, -speed, 0);
@@ -331,7 +306,7 @@ void Scene_Continuous::GJK_2D_Update()
 	if (GetAsyncKeyState('T'))
 		gjk_2d_poly_1.Rotate(0, 0, speed * 0.5f);
 	if (GetAsyncKeyState('Y'))
-		gjk_2d_poly_2.Rotate(0, 0, speed * 0.5f);
+		gjk_2d_poly_2.Rotate(0, 0, speed * 0.5f);*/
 
 	//the 2 polys----------------------------------------------------------------//
 	gjk_2d_poly_1.RecalculatePoints();
@@ -393,19 +368,19 @@ void Scene_Continuous::Triangle_3D_Update()
 
 	//triangle controls----------------------------------------------------------//
 	Vector3 triangle_offset_;
-	if (GetAsyncKeyState('G'))	//DOWN
-		triangle_offset_ += Vector3(triangle_up.x * speed, triangle_up.y * speed, triangle_up.z * speed);
-	if (GetAsyncKeyState('T'))	//UP
-		triangle_offset_ += Vector3(triangle_up.x * -speed, triangle_up.y * -speed, triangle_up.z * -speed);
-	if (GetAsyncKeyState('H'))	//RIGHT
-		triangle_offset_ += Vector3(triangle_right.x * -speed, triangle_right.y * -speed, triangle_right.z * -speed);
-	if (GetAsyncKeyState('F'))	//LEFT
-		triangle_offset_ += Vector3(triangle_right.x * speed, triangle_right.y * speed, triangle_right.z * speed);
+	//if (GetAsyncKeyState('G'))	//DOWN
+	//	triangle_offset_ += Vector3(triangle_up.x * speed, triangle_up.y * speed, triangle_up.z * speed);
+	//if (GetAsyncKeyState('T'))	//UP
+	//	triangle_offset_ += Vector3(triangle_up.x * -speed, triangle_up.y * -speed, triangle_up.z * -speed);
+	//if (GetAsyncKeyState('H'))	//RIGHT
+	//	triangle_offset_ += Vector3(triangle_right.x * -speed, triangle_right.y * -speed, triangle_right.z * -speed);
+	//if (GetAsyncKeyState('F'))	//LEFT
+	//	triangle_offset_ += Vector3(triangle_right.x * speed, triangle_right.y * speed, triangle_right.z * speed);
 
-	if (GetAsyncKeyState('U'))	//FORWARD
-		triangle_offset_ += Vector3(triangle_normal.x * speed, triangle_normal.y * speed, triangle_normal.z * speed);
-	if (GetAsyncKeyState('J'))	//BACKWARD
-		triangle_offset_ += Vector3(triangle_normal.x * -speed, triangle_normal.y * -speed, triangle_normal.z * -speed);
+	//if (GetAsyncKeyState('U'))	//FORWARD
+	//	triangle_offset_ += Vector3(triangle_normal.x * speed, triangle_normal.y * speed, triangle_normal.z * speed);
+	//if (GetAsyncKeyState('J'))	//BACKWARD
+	//	triangle_offset_ += Vector3(triangle_normal.x * -speed, triangle_normal.y * -speed, triangle_normal.z * -speed);
 
 	triangle_offset += triangle_offset_;
 	triangle_pt[0] += triangle_offset_;

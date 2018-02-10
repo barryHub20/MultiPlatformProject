@@ -39,7 +39,8 @@ void View::Init()
 
 	//test camera--------------------------------------------------------------------//
 	//camera.Init(Vector3(0, 0, 1), Vector3(0, 0, 0), Vector3(0, 1, 0));	//2D
-	camera.Init(Vector3(0, 0, 1000), Vector3(0, 0, 500), Vector3(0, 1, 0));	//3D
+	//camera.Init(Vector3(0, 0, 1000), Vector3(0, 0, 500), Vector3(0, 1, 0));	//3D
+	camera.Init(Vector3(-47.6996f, 238.696f, 200.899f), Vector3(-47.485f, 238.004f, 200.21f), Vector3(0.205f, 0.722f, -0.660f));	//3D stuck to pos
 }
 
 /********************************************************************************
@@ -155,6 +156,25 @@ void View::StartRendering2D(Camera& camera)
 	viewStack.LookAt(camera.position.x, camera.position.y, camera.position.z,
 		camera.target.x, camera.target.y, camera.target.z,
 		camera.up.x, camera.up.y, camera.up.z);
+
+	// Model matrix : an identity matrix (model will be at the origin)
+	modelStack.LoadIdentity();
+}
+
+void View::StartRendering2D_onScreen()
+{
+	float offsetX = -Screen::CAMERA_WIDTH*0.5f;
+	float offsetY = -Screen::CAMERA_HEIGHT*0.5f;
+
+	perspective.SetToOrtho(offsetX, Screen::CAMERA_WIDTH + offsetX, offsetY, Screen::CAMERA_HEIGHT + offsetY, -100.f, 100.f);
+
+	projectionStack.LoadMatrix(perspective);
+
+	// Set up the view
+	viewStack.LoadIdentity();
+	viewStack.LookAt(0, 0, 1,
+		0, 0, 0,
+		0, 1, 0);
 
 	// Model matrix : an identity matrix (model will be at the origin)
 	modelStack.LoadIdentity();

@@ -89,6 +89,7 @@ public:
 	/********************** Core Render functions *****************************/
 	void ClearScreen();	//more like Pre-Render
 	void StartRendering2D(Camera& camera);
+	void StartRendering2D_onScreen();
 	void StartRendering3D(Camera& camera);
 	void PostRender();
 	virtual void SetShader(SHADER_TYPE shaderType);

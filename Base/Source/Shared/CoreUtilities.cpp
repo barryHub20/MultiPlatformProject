@@ -3,7 +3,6 @@
 View CU::view;
 AssetManager CU::assetMan;
 Pathfinding CU::pathfind;
-ColEngine CU::discrete_col;
 
 #if CURR_PLAT_PC
 Input_PC CU::input;

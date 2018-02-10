@@ -73,6 +73,27 @@ Vector3 GJK_Simplex_3D::GetNewLast(Vector3 dir, CD_Polygon_3D& A, CD_Polygon_3D&
 }
 
 /*********************************************************************************************************
+Get the barycentric coordinate (u, v, w) with respect to point P
+in Triangle (a, b, c)
+https://gamedev.stackexchange.com/questions/23743/whats-the-most-efficient-way-to-find-barycentric-coordinates
+/*********************************************************************************************************/
+void GJK_Simplex_3D::BarycentricCoord(Vector3 p, Vector3 a, Vector3 b, Vector3 c, Vector3& retVal)
+{
+	Vector3 v0 = b - a;
+	Vector3 v1 = c - a;
+	Vector3 v2 = p - a;
+	float d00 = v0.Dot(v0);
+	float d01 = v0.Dot(v1);
+	float d11 = v1.Dot(v1);
+	float d20 = v2.Dot(v0);
+	float d21 = v2.Dot(v1);
+	float denom = d00 * d11 - d01 * d01;
+	retVal.y = (d11 * d20 - d01 * d21) / denom;
+	retVal.z = (d00 * d21 - d01 * d20) / denom;
+	retVal.x = 1.0f - retVal.y - retVal.z;
+}
+
+/*********************************************************************************************************
 Project origin to AB and get the contact point
 Vector3 vertices[0]: the 3 points of the triangle
 (doesn't have to be in any order)
@@ -116,6 +137,7 @@ Vector3 GJK_Simplex_3D::closestPointToOrigin(Vector3 vert0, Vector3 vert1, Vecto
 	float t = f * edge2.Dot(q);
 
 	triangle_intersectPt = rayOrigin + rayVector * t;
+	final_primitiveType = 'T';
 	return triangle_intersectPt;
 }
 
@@ -194,10 +216,17 @@ Vector3 GJK_Simplex_3D::NonIntersection(Vector3 vert0, Vector3 vert1, Vector3 ve
 
 	//get closest point----------------------------------------------------------//
 	if (smallestLensq_Index < 3)
+	{
+		final_primitiveType = 'E';
 		triangle_intersectPt = edges_intersectPt[smallestLensq_Index];
+		edge_type = smallestLensq_Index;
+	}
 	else
+	{
 		triangle_intersectPt = vertices[smallestLensq_Index - 3];
-
+		final_primitiveType = 'V';
+		vertType = smallestLensq_Index - 3;
+	}
 	return triangle_intersectPt;
 }
 
@@ -249,8 +278,96 @@ int GJK_Simplex_3D::GetMin(float a, float b, float c)
 
 /*********************************************************************************************************
 compute the closest points between 2 3D polygons
+(lensq or dot can be used)
 /*********************************************************************************************************/
 void GJK_Simplex_3D::computeClosestPoints(CD_Polygon_3D& A, CD_Polygon_3D& B)
+{
+	if (final_primitiveType == 'T')
+	{
+		//cout << "T" << endl;
+		//Barycentric coords
+		Vector3 lambda;
+		BarycentricCoord(closestPoint, vertices[0], vertices[1], vertices[2], lambda);
+
+		shapeA_closestPt = A.pointList[sA_pA] * lambda.x + A.pointList[sA_pB] * lambda.y + A.pointList[sA_pC] * lambda.z;
+		shapeB_closestPt = B.pointList[sB_pA] * lambda.x + B.pointList[sB_pB] * lambda.y + B.pointList[sB_pC] * lambda.z;
+	}
+	else if (final_primitiveType == 'E')
+	{
+		//cout << "E" << endl;
+		Vector3 edge;
+		float p_lensq, edge_lensq;
+
+		//linear coefficient
+		if (edge_type == 0)	//AB (startVert: A, endVert: B)
+		{
+			edge = vertices[1] - vertices[0];
+			p_lensq = -edge.Dot(vertices[0]);
+			edge_lensq = edge.Dot(edge);
+			
+			lambda2 = p_lensq / edge_lensq;
+			lambda1 = 1.f - lambda2;
+
+			//lamba1 = startVert, lambda2 = endVert
+			shapeA_closestPt = A.pointList[sA_pA] * lambda1 + A.pointList[sA_pB] * lambda2;
+			shapeB_closestPt = B.pointList[sB_pA] * lambda1 + B.pointList[sB_pB] * lambda2;
+		}
+		else if (edge_type == 1)	//AC (startVert: A, endVert: C)
+		{
+			edge = vertices[2] - vertices[0];
+			p_lensq = -edge.Dot(vertices[0]);
+			edge_lensq = edge.Dot(edge);
+
+			lambda2 = p_lensq / edge_lensq;
+			lambda1 = 1.f - lambda2;
+
+			//lamba1 = startVert, lambda2 = endVert
+			shapeA_closestPt = A.pointList[sA_pA] * lambda1 + A.pointList[sA_pC] * lambda2;
+			shapeB_closestPt = B.pointList[sB_pA] * lambda1 + B.pointList[sB_pC] * lambda2;
+		}
+		else //BC (startVert: B, endVert: C)
+		{
+			edge = vertices[2] - vertices[1];
+			p_lensq = -edge.Dot(vertices[1]);
+			edge_lensq = edge.Dot(edge);
+
+			lambda2 = p_lensq / edge_lensq;
+			lambda1 = 1.f - lambda2;
+
+			//lamba1 = startVert, lambda2 = endVert
+			shapeA_closestPt = A.pointList[sA_pB] * lambda1 + A.pointList[sA_pC] * lambda2;
+			shapeB_closestPt = B.pointList[sB_pB] * lambda1 + B.pointList[sB_pC] * lambda2;
+		}
+	}
+	else
+	{
+		//cout << "V" << endl;
+		//none
+		if (vertType == 0)
+		{
+			shapeA_closestPt = A.pointList[sA_pA];
+			shapeB_closestPt = B.pointList[sB_pA];
+		}
+		else if (vertType == 1)
+		{
+			shapeA_closestPt = A.pointList[sA_pB];
+			shapeB_closestPt = B.pointList[sB_pB];
+		}
+		else
+		{
+			shapeA_closestPt = A.pointList[sA_pC];
+			shapeB_closestPt = B.pointList[sB_pC];
+		}
+	}
+}
+
+/*********************************************************************************************************
+Create closest contact with origin
+/*********************************************************************************************************/
+void GJK_Simplex_3D::TransformShape(CD_Polygon_3D& shape, Vector3 vel, float rotAngle, float t)
+{
+}
+void GJK_Simplex_3D::SetShape_ToAbsoute(CD_Polygon_3D& projected, CD_Polygon_3D& main)
 {
 }
 
@@ -273,18 +390,18 @@ void GJK_Simplex_3D::GetClosestPoints_Start(CD_Polygon_3D& A, CD_Polygon_3D& B)
 	dir.Set(0, 1, 0);
 
 	vertices[0] = GetNewLast(dir, A, B);	//A
-	shapeA_MDpointA = shapeA_MDpoint;
-	shapeB_MDpointA = shapeB_MDpoint;
+	sA_pA = shapeA_MDpoint;
+	sB_pA = shapeB_MDpoint;
 	vertices[1] = GetNewLast(-dir, A, B);	//B
-	shapeA_MDpointB = shapeA_MDpoint;
-	shapeB_MDpointB = shapeB_MDpoint;
+	sA_pB = shapeA_MDpoint;
+	sB_pB = shapeB_MDpoint;
 
 	dir = closestPointToOrigin_AB(vertices[0], vertices[1]);
 	if (dir.Dot(-vertices[0]) < 0.f)	dir *= -1.f;
 
 	vertices[2] = GetNewLast(dir, A, B);	//C
-	shapeA_MDpointC = shapeA_MDpoint;
-	shapeB_MDpointC = shapeB_MDpoint;
+	sA_pC = shapeA_MDpoint;
+	sB_pC = shapeB_MDpoint;
 	dir = -closestPointToOrigin(vertices[0], vertices[1], vertices[2]);
 
 	//loop-------------------------------------------------------------//
@@ -302,8 +419,8 @@ Remove face origin check if found redundant
 /*********************************************************************************************************/
 void GJK_Simplex_3D::GetClosestPoints(CD_Polygon_3D& A, CD_Polygon_3D& B)
 {
-	//if (finishedGJK)
-	//	return;
+	GetClosestPoints_Start(A, B);
+
 	infinite_loop = false;
 	int vertReplaced = -1;	//replaced by newPoint. 0: A, 1: B, 2: C
 
@@ -314,12 +431,13 @@ void GJK_Simplex_3D::GetClosestPoints(CD_Polygon_3D& A, CD_Polygon_3D& B)
 		if (newPoint.Same(vertices[0]) || newPoint.Same(vertices[1])
 			|| newPoint.Same(vertices[2]))
 		{
-			closestDist = closestPointToOrigin(vertices[0], vertices[1], vertices[2]).Length();
-			//cout << closestDist << endl;
-			if (simplexMesh)
+			closestPoint = closestPointToOrigin(vertices[0], vertices[1], vertices[2]);
+			closestDist = closestPoint.Length();
+			
+			/*if (simplexMesh)
 				delete simplexMesh;
 			simplexMesh = new Mesh();
-			simplexMesh->Init_Triangle(vertices, Color(109, 242, 236), Color(71, 191, 185));
+			simplexMesh->Init_Triangle(vertices, Color(109, 242, 236), Color(71, 191, 185));*/
 
 			break;
 		}
@@ -335,8 +453,8 @@ void GJK_Simplex_3D::GetClosestPoints(CD_Polygon_3D& A, CD_Polygon_3D& B)
 		float new_bc_mag = new_bc.LengthSquared();
 
 		//no similar magnitude---------------------------------------------//
-		//if (new_ab_mag != new_ac_mag && new_ab_mag != new_bc_mag && new_ac_mag != new_bc_mag)
-		if (!new_ab.Same(new_ac) && !new_ab.Same(new_bc) && !new_ac.Same(new_bc))
+		if (new_ab_mag != new_ac_mag && new_ab_mag != new_bc_mag && new_ac_mag != new_bc_mag)
+		//if (!new_ab.Same(new_ac) && !new_ab.Same(new_bc) && !new_ac.Same(new_bc)) (WRONG!)
 		{
 			//get the new dir
 			if (new_ab_mag < new_ac_mag && new_ab_mag < new_bc_mag)
@@ -410,7 +528,7 @@ void GJK_Simplex_3D::GetClosestPoints(CD_Polygon_3D& A, CD_Polygon_3D& B)
 			//point towards origin)
 
 			//All are the same dist----------------------------------------//
-			if (new_ab.Same(new_ac) && new_ab.Same(new_bc) && new_ac.Same(new_bc))
+			if (new_ab_mag == new_ac_mag && new_ab_mag == new_bc_mag && new_ac == new_bc_mag)
 			{
 				float new_ab_Dot = new_ab_normal.Dot(rootDir);
 				float new_ac_Dot = new_ac_normal.Dot(rootDir);
@@ -436,7 +554,7 @@ void GJK_Simplex_3D::GetClosestPoints(CD_Polygon_3D& A, CD_Polygon_3D& B)
 			}
 
 			//AB and BC same dist------------------------------------------//
-			else if (new_ab.Same(new_bc))
+			else if (new_ab_mag == new_bc_mag)
 			{
 				if (new_ab_normal.Dot(rootDir) > new_bc_normal.Dot(rootDir))	//AB closer
 				{
@@ -453,7 +571,7 @@ void GJK_Simplex_3D::GetClosestPoints(CD_Polygon_3D& A, CD_Polygon_3D& B)
 			}
 
 			//AB and AC same dist------------------------------------------//
-			else if (new_ab.Same(new_ac))
+			else if (new_ab_mag == new_ac_mag)
 			{
 				if (new_ab_normal.Dot(rootDir) > new_ac_normal.Dot(rootDir))	//AB closer
 				{
@@ -487,59 +605,79 @@ void GJK_Simplex_3D::GetClosestPoints(CD_Polygon_3D& A, CD_Polygon_3D& B)
 			}
 		}
 
+		//get the shape points that form new MD point----------------------//
+		if (vertReplaced == 0)	//A
+		{
+			sA_pA = shapeA_MDpoint;
+			sB_pA = shapeB_MDpoint;
+		}
+		else if (vertReplaced == 1)	//B
+		{
+			sA_pB = shapeA_MDpoint;
+			sB_pB = shapeB_MDpoint;
+		}
+		else //C
+		{
+			sA_pC = shapeA_MDpoint;
+			sB_pC = shapeB_MDpoint;
+		}
+
 		//loop-------------------------------------------------------------//
 		newPoint = GetNewLast(dir, A, B);
-		
 		infinite_counter++;
 
 		//rare case the algo will oscillate around closest solution--------// 
 		if (infinite_counter > 10)
 		{
 			//take a small sampling of the past few results (7)
-			if (infinite_counter < 18)
+			if (infinite_counter < 15)
 			{
-				lastFew_dist[infinite_counter - 11] = closestPointToOrigin(vertices[0], vertices[1], vertices[2]).LengthSquared();
+				lastFew_pt[infinite_counter - 11] = closestPointToOrigin(vertices[0], vertices[1], vertices[2]);
+				lastFew_dist[infinite_counter - 11] = lastFew_pt[infinite_counter - 11].LengthSquared();
 			}
 			else
 			{
 				//take the shortest dist. from this sampling
 				float shortestDist = lastFew_dist[0];
-				for (int i = 1; i < 7; ++i)
+				for (int i = 1; i < 4; ++i)
 				{
 					if (shortestDist > lastFew_dist[i])
 						shortestDist = lastFew_dist[i];
 				}
+				closestPoint = lastFew_pt[infinite_counter - 11];
 				closestDist = sqrt(shortestDist);
 				infinite_loop = true;
+
+				/*if (simplexMesh)
+					delete simplexMesh;
+				simplexMesh = new Mesh();
+				simplexMesh->Init_Triangle(vertices, Color(109, 242, 236), Color(71, 191, 185));*/
+
 				break;
 			}
 		}
 	}
 
-	//get the shape points that form new MD point----------------------//
-	if (vertReplaced == 0)	//A
-	{
-		shapeA_MDpointA = shapeA_MDpoint;
-		shapeB_MDpointA = shapeB_MDpoint;
-	}
-	else if (vertReplaced == 1)	//B
-	{
-		shapeA_MDpointB = shapeA_MDpoint;
-		shapeB_MDpointB = shapeB_MDpoint;
-	}
-	else //C
-	{
-		shapeA_MDpointC = shapeA_MDpoint;
-		shapeB_MDpointC = shapeB_MDpoint;
-	}
-
+	//compute closest points-------------------------------------------//
 	computeClosestPoints(A, B);
+}
 
-	//remove if looping----------------------------------------------------//
-	if (simplexMesh)
-		delete simplexMesh;
-	simplexMesh = new Mesh();
-	simplexMesh->Init_Triangle(vertices, Color(109, 242, 236), Color(71, 191, 185));
+/*********************************************************************************************************
+collision check
+/*********************************************************************************************************/
+bool GJK_Simplex_3D::CollisionResponse(CD_Polygon_3D& A, CD_Polygon_3D& Aresponse, CD_Polygon_3D& B)
+{
+	//set up----------------------------------------------------------------------//
+	const float ANGULAR_TOLERANCE = 0.1f;
+	noCollision = false;
+	t = t_tracker = 0.f;
+
+	//A_Response copied from A----------------------------------------------------//
+	Aresponse.CopyFrom(A);
+	GetClosestPoints(A, B);
+
+	//loop------------------------------------------------------------------------//
+	return false;
 }
 
 /*********************************************************************************************************
@@ -553,21 +691,21 @@ void GJK_Simplex_3D::Draw()
 		simplexMesh->Draw();
 	}
 
-	//point 0: red
-	CU::view.Pre_DrawMesh(vertices[0], Vector3(10, 1, 10), CU::sphere_red);
-	CU::sphere_red->Draw();
+	////point 0: red
+	//CU::view.Pre_DrawMesh(vertices[0], Vector3(10, 1, 10), CU::sphere_red);
+	//CU::sphere_red->Draw();
 
 	//point 1: blue
-	CU::view.Pre_DrawMesh(vertices[1], Vector3(10, 1, 10), CU::sphere_blue);
+	CU::view.Pre_DrawMesh(shapeA_closestPt, Vector3(10, 10, 10), CU::sphere_blue);
 	CU::sphere_blue->Draw();
 
 	//point 2: green
-	CU::view.Pre_DrawMesh(vertices[2], Vector3(10, 1, 10), CU::sphere_green);
+	CU::view.Pre_DrawMesh(shapeB_closestPt, Vector3(10, 10, 10), CU::sphere_green);
 	CU::sphere_green->Draw();
 
-	//last_newPoint: yellow
-	CU::view.Pre_DrawMesh(edges_intersectPt[0], Vector3(10, 10, 10), CU::sphere_yellow);
-	CU::sphere_yellow->Draw();
+	////last_newPoint: yellow
+	//CU::view.Pre_DrawMesh(edges_intersectPt[0], Vector3(10, 10, 10), CU::sphere_yellow);
+	//CU::sphere_yellow->Draw();
 
 	////draw dir
 	//float len = dir.Length();
@@ -578,18 +716,18 @@ void GJK_Simplex_3D::Draw()
 	//	Vector3(len, len, len), CU::line_purple);
 	//CU::line_purple->Draw();
 
-	//MD
-	for (int i = 0; i < 64; ++i)
-	{
-		/*if (i == 32)
-		{
-			CU::view.Pre_DrawMesh(MD_points[i], Vector3(5, 5, 5), CU::sphere_red);
-			CU::sphere_red->Draw();
-		}
-		else
-		{*/
-			CU::view.Pre_DrawMesh(MD_points[i], Vector3(5, 5, 5), CU::sphere_dark_green);
-			CU::sphere_dark_green->Draw();
-		//}
-	}
+	////MD
+	//for (int i = 0; i < 64; ++i)
+	//{
+	//	/*if (i == 32)
+	//	{
+	//		CU::view.Pre_DrawMesh(MD_points[i], Vector3(5, 5, 5), CU::sphere_red);
+	//		CU::sphere_red->Draw();
+	//	}
+	//	else
+	//	{*/
+	//		CU::view.Pre_DrawMesh(MD_points[i], Vector3(5, 5, 5), CU::sphere_dark_green);
+	//		CU::sphere_dark_green->Draw();
+	//	//}
+	//}
 }

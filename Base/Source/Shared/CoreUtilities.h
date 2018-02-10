@@ -6,7 +6,6 @@
 #include "TextureLoader.h"
 #include "AssetManager.h"
 #include "Pathfinding.h"
-#include "CollisionTut\ColEngine.h"
 
 #if CURR_PLAT_PC
 #include "Input_PC.h"
@@ -34,7 +33,6 @@ public:
 	static View view;
 	static AssetManager assetMan;
 	static Pathfinding pathfind;
-	static ColEngine discrete_col;
 
 	/******************** platform-dependent utilities **********************/
 #if CURR_PLAT_PC
