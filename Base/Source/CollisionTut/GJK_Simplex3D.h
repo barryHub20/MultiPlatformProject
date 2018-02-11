@@ -21,14 +21,21 @@ public:
 	Vector3 vertices[3];
 	Vector3 newPoint, prev_newPoint;
 	Mesh* simplexMesh;
-	float lastFew_dist[4];
-	Vector3 lastFew_pt[4];
 	bool infinite_loop;
 	float closestDist;
 	Vector3 closestPoint;
 	Vector3 rootDir;
 	Vector3 new_ab_normal, new_ac_normal, new_bc_normal;
 	float new_ab_Dot, new_ac_Dot, new_bc_Dot;
+
+	//data collection------------------------------------------------------//
+	Vector3 collect_Pt[8];
+	float collect_Dist[8];
+	Vector3 collect_verts[8][3];
+	char collect_primitiveType[8];
+	int collect_edgeType[8];
+	int collect_vertType[8];
+	int collect_suppIdx[8][6];
 
 	//closest points-------------------------------------------------------//
 	float lambda1, lambda2, lambda3;

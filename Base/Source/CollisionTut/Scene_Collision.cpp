@@ -191,7 +191,7 @@ void Scene_Continuous::OBB_V_OBB_3D_Init()
 	poly_3d_2.Init(Vector3(70, 0, 0), Vector3(50, 50, 50), Vector3(1, 0, 0), false, Color(0, 0, 255));
 
 	poly_3d_1.yawRot(0);
-	poly_3d_1.pitchRot(74.5626f);
+	poly_3d_1.pitchRot(98.2462f);
 
 	poly_3d_1.RecalculatePoints();
 	poly_3d_2.RecalculatePoints();
@@ -253,8 +253,8 @@ void Scene_Continuous::OBB_V_OBB_3D_Draw()
 	CU::view.Pre_DrawMesh(Vector3(0,0,0), Vector3(1700, 1700, 1700), CU::axes);
 	CU::axes->Draw();
 
-	/*poly_3d_1.Draw();
-	poly_3d_2.Draw();*/
+	poly_3d_1.Draw();
+	poly_3d_2.Draw();
 
 	gjk_simplex_3D.Draw();
 }

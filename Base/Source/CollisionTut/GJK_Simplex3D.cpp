@@ -26,6 +26,7 @@ void GJK_Simplex_3D::Reset()
 {
 	total_vertices = 0;
 	closestDist = -1.f;
+	lambda1 = lambda2 = lambda3 = 0.f;
 	doesNotContain = false;	//unverified
 }
 
@@ -284,7 +285,6 @@ void GJK_Simplex_3D::computeClosestPoints(CD_Polygon_3D& A, CD_Polygon_3D& B)
 {
 	if (final_primitiveType == 'T')
 	{
-		//cout << "T" << endl;
 		//Barycentric coords
 		Vector3 lambda;
 		BarycentricCoord(closestPoint, vertices[0], vertices[1], vertices[2], lambda);
@@ -294,7 +294,6 @@ void GJK_Simplex_3D::computeClosestPoints(CD_Polygon_3D& A, CD_Polygon_3D& B)
 	}
 	else if (final_primitiveType == 'E')
 	{
-		//cout << "E" << endl;
 		Vector3 edge;
 		float p_lensq, edge_lensq;
 
@@ -341,7 +340,6 @@ void GJK_Simplex_3D::computeClosestPoints(CD_Polygon_3D& A, CD_Polygon_3D& B)
 	}
 	else
 	{
-		//cout << "V" << endl;
 		//none
 		if (vertType == 0)
 		{
@@ -433,12 +431,12 @@ void GJK_Simplex_3D::GetClosestPoints_Start(CD_Polygon_3D& A, CD_Polygon_3D& B)
 {
 	Reset();
 
-	//create all MD points out-----------------------------------------//
-	for (int i = 0; i < 8; ++i)
-	{
-		for (int j = 0; j < 8; ++j)
-			MD_points[j + i * 8] = A.pointList[i] - B.pointList[j];
-	}
+	////create all MD points out-----------------------------------------//
+	//for (int i = 0; i < 8; ++i)
+	//{
+	//	for (int j = 0; j < 8; ++j)
+	//		MD_points[j + i * 8] = A.pointList[i] - B.pointList[j];
+	//}
 
 	//get random dir---------------------------------------------------//
 	dir.Set(0, 1, 0);
@@ -488,10 +486,10 @@ void GJK_Simplex_3D::GetClosestPoints(CD_Polygon_3D& A, CD_Polygon_3D& B)
 			closestPoint = closestPointToOrigin(vertices[0], vertices[1], vertices[2]);
 			closestDist = closestPoint.Length();
 
-			if (simplexMesh)
+			/*if (simplexMesh)
 				delete simplexMesh;
 			simplexMesh = new Mesh();
-			simplexMesh->Init_Triangle(vertices, Color(109, 242, 236), Color(71, 191, 185));
+			simplexMesh->Init_Triangle(vertices, Color(109, 242, 236), Color(71, 191, 185));*/
 
 			break;
 		}
@@ -531,19 +529,16 @@ void GJK_Simplex_3D::GetClosestPoints(CD_Polygon_3D& A, CD_Polygon_3D& B)
 
 			if (new_ab_Dot > new_ac_Dot && new_ab_Dot > new_bc_Dot)	//AB closest
 			{
-				//cout << "1" << endl;
 				vertices[2] = newPoint;	//C is the furthest
 				vertReplaced = 2;
 			}
 			else if (new_ac_Dot > new_ab_Dot && new_ac_Dot > new_bc_Dot)	//AC closest
 			{
-				//cout << "2" << endl;
 				vertices[1] = newPoint;	//B is the furthest
 				vertReplaced = 1;
 			}
 			else	//BC closest
 			{
-				//cout << "3" << endl;
 				vertices[0] = newPoint;	//A is the furthest
 				vertReplaced = 0;
 			}
@@ -559,13 +554,11 @@ void GJK_Simplex_3D::GetClosestPoints(CD_Polygon_3D& A, CD_Polygon_3D& B)
 			{
 				if (new_ab_normal.Dot(rootDir) > new_bc_normal.Dot(rootDir))	//AB closer
 				{
-					//cout << "4" << endl;
 					vertices[2] = newPoint;	//C is the furthest
 					vertReplaced = 2;
 				}
 				else //BC closer
 				{
-					//cout << "5" << endl;
 					vertices[0] = newPoint;	//A is the furthest
 					vertReplaced = 0;
 				}
@@ -576,13 +569,11 @@ void GJK_Simplex_3D::GetClosestPoints(CD_Polygon_3D& A, CD_Polygon_3D& B)
 			{
 				if (new_ab_normal.Dot(rootDir) > new_ac_normal.Dot(rootDir))	//AB closer
 				{
-					//cout << "6" << endl;
 					vertices[2] = newPoint;	//C is the furthest
 					vertReplaced = 2;
 				}
 				else //AC closer
 				{
-					//cout << "7" << endl;
 					vertices[1] = newPoint;	//B is the furthest
 					vertReplaced = 1;
 				}
@@ -593,13 +584,11 @@ void GJK_Simplex_3D::GetClosestPoints(CD_Polygon_3D& A, CD_Polygon_3D& B)
 			{
 				if (new_bc_normal.Dot(rootDir) > new_ac_normal.Dot(rootDir))	//BC closer
 				{
-					//cout << "8" << endl;
 					vertices[0] = newPoint;	//A is the furthest
 					vertReplaced = 0;
 				}
 				else //AC closer
 				{
-					//cout << "9" << endl;
 					vertices[1] = newPoint;	//B is the furthest
 					vertReplaced = 1;
 				}
@@ -628,32 +617,58 @@ void GJK_Simplex_3D::GetClosestPoints(CD_Polygon_3D& A, CD_Polygon_3D& B)
 		newPoint = GetNewLast(dir, A, B);
 		infinite_counter++;
 
-		//rare case the algo will oscillate around closest solution--------// 
-		if (infinite_counter > 10)
+		//collect info-----------------------------------------------------//
+		if (infinite_counter >= 10)
 		{
-			//take a small sampling of the past few results (7)
-			if (infinite_counter < 15)
-			{
-				lastFew_pt[infinite_counter - 11] = closestPointToOrigin(vertices[0], vertices[1], vertices[2]);
-				lastFew_dist[infinite_counter - 11] = lastFew_pt[infinite_counter - 11].LengthSquared();
-			}
-			else
-			{
-				//take the shortest dist. from this sampling
-				float shortestDist = lastFew_dist[0];
-				for (int i = 1; i < 4; ++i)
-				{
-					if (shortestDist > lastFew_dist[i])
-						shortestDist = lastFew_dist[i];
-				}
-				closestPoint = lastFew_pt[infinite_counter - 11];
-				closestDist = sqrt(shortestDist);
-				infinite_loop = true;
+			int i = infinite_counter - 10;
+			collect_Pt[i] = closestPointToOrigin(vertices[0], vertices[1], vertices[2]);
+			collect_Dist[i] = collect_Pt[i].Length();
+			collect_verts[i][0] = vertices[0];
+			collect_verts[i][1] = vertices[1];
+			collect_verts[i][2] = vertices[2];
+			collect_primitiveType[i] = final_primitiveType;
+			collect_edgeType[i] = edge_type;
+			collect_vertType[i] = vertType;
 
-				if (simplexMesh)
-					delete simplexMesh;
-				simplexMesh = new Mesh();
-				simplexMesh->Init_Triangle(vertices, Color(109, 242, 236), Color(71, 191, 185));
+			//support func vert index
+			//0: sA_pA -> 5: sB_pC (follow the order in header file)
+			collect_suppIdx[i][0] = sA_pA;
+			collect_suppIdx[i][1] = sB_pA;
+			collect_suppIdx[i][2] = sA_pB;
+			collect_suppIdx[i][3] = sB_pB;
+			collect_suppIdx[i][4] = sA_pC;
+			collect_suppIdx[i][5] = sB_pC;
+
+			//rare case the algo will oscillate around closest solution----//
+			if (infinite_counter >= 17)
+			{
+				//collect the most most optimal solution
+				int inf_cd_idx = 0;
+				float inf_closestDist = collect_Dist[0];
+				for (int i = 1; i < 8; ++i)
+				{
+					if (inf_closestDist > collect_Dist[i])
+					{
+						inf_cd_idx = i;
+						inf_closestDist = collect_Dist[i];
+					}
+				}
+
+				//set the info for the closest dist------------------------//
+				closestDist = collect_Dist[inf_cd_idx];
+				closestPoint = collect_Pt[inf_cd_idx];
+				vertices[0] = collect_verts[inf_cd_idx][0];
+				vertices[1] = collect_verts[inf_cd_idx][1];
+				vertices[2] = collect_verts[inf_cd_idx][2];
+				final_primitiveType = collect_primitiveType[inf_cd_idx];
+				edge_type = collect_edgeType[inf_cd_idx];
+				vertType = collect_vertType[inf_cd_idx];
+				sA_pA = collect_suppIdx[inf_cd_idx][0];
+				sB_pA = collect_suppIdx[inf_cd_idx][1];
+				sA_pB = collect_suppIdx[inf_cd_idx][2];
+				sB_pB = collect_suppIdx[inf_cd_idx][3];
+				sA_pC = collect_suppIdx[inf_cd_idx][4];
+				sB_pC = collect_suppIdx[inf_cd_idx][5];
 
 				break;
 			}
@@ -697,13 +712,13 @@ void GJK_Simplex_3D::Draw()
 	//CU::view.Pre_DrawMesh(vertices[0], Vector3(10, 1, 10), CU::sphere_red);
 	//CU::sphere_red->Draw();
 
-	////point 1: blue
-	//CU::view.Pre_DrawMesh(shapeA_closestPt, Vector3(10, 10, 10), CU::sphere_blue);
-	//CU::sphere_blue->Draw();
+	//point 1: blue
+	CU::view.Pre_DrawMesh(shapeA_closestPt, Vector3(10, 10, 10), CU::sphere_blue);
+	CU::sphere_blue->Draw();
 
-	////point 2: green
-	//CU::view.Pre_DrawMesh(shapeB_closestPt, Vector3(10, 10, 10), CU::sphere_green);
-	//CU::sphere_green->Draw();
+	//point 2: green
+	CU::view.Pre_DrawMesh(shapeB_closestPt, Vector3(10, 10, 10), CU::sphere_green);
+	CU::sphere_green->Draw();
 
 	////last_newPoint: yellow
 	//CU::view.Pre_DrawMesh(edges_intersectPt[0], Vector3(10, 10, 10), CU::sphere_yellow);
@@ -719,9 +734,9 @@ void GJK_Simplex_3D::Draw()
 	//CU::line_purple->Draw();
 
 	//MD
-	for (int i = 0; i < 64; ++i)
+	/*for (int i = 0; i < 64; ++i)
 	{
 		CU::view.Pre_DrawMesh(MD_points[i], Vector3(5, 5, 5), CU::sphere_dark_green);
 		CU::sphere_dark_green->Draw();
-	}
+	}*/
 }
