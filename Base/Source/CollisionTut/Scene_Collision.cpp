@@ -190,8 +190,8 @@ void Scene_Continuous::OBB_V_OBB_3D_Init()
 	poly_3d_1_projected.Init(Vector3(-30, 0, 0), Vector3(50, 100, 120), Vector3(1, 0, 0), true, Color(0, 0, 255));
 	poly_3d_2.Init(Vector3(70, 0, 0), Vector3(50, 50, 50), Vector3(1, 0, 0), false, Color(0, 0, 255));
 
-	poly_3d_1.yawRot(58.8975f);
-	poly_3d_1.pitchRot(20.0f);
+	poly_3d_1.yawRot(0);
+	poly_3d_1.pitchRot(74.5626f);
 
 	poly_3d_1.RecalculatePoints();
 	poly_3d_2.RecalculatePoints();
@@ -212,14 +212,14 @@ void Scene_Continuous::OBB_V_OBB_3D_Update()
 	//transformation-------------------------------------------------------------//
 	if (GetAsyncKeyState('E'))
 	{
-		poly_3d_1.yawRot(speed * 0.01f);
+		poly_3d_1.yawRot(speed * 0.2f);
 	}
 	/*poly_3d_1.yawRot(speed * 0.1f);
 	poly_3d_2.yawRot(speed * 0.1f);*/
-	//if (GetAsyncKeyState('R'))
-	//{
-	//	poly_3d_1.pitchRot(speed);
-	//}
+	if (GetAsyncKeyState('R'))
+	{
+		poly_3d_1.pitchRot(speed * 0.1f);
+	}
 
 	/*if (GetAsyncKeyState('Y'))
 		poly_3d_2.yawRot(speed);
@@ -253,8 +253,8 @@ void Scene_Continuous::OBB_V_OBB_3D_Draw()
 	CU::view.Pre_DrawMesh(Vector3(0,0,0), Vector3(1700, 1700, 1700), CU::axes);
 	CU::axes->Draw();
 
-	poly_3d_1.Draw();
-	poly_3d_2.Draw();
+	/*poly_3d_1.Draw();
+	poly_3d_2.Draw();*/
 
 	gjk_simplex_3D.Draw();
 }

@@ -372,6 +372,60 @@ void GJK_Simplex_3D::SetShape_ToAbsoute(CD_Polygon_3D& projected, CD_Polygon_3D&
 }
 
 /*********************************************************************************************************
+calculate normals of the tetrathron
+/*********************************************************************************************************/
+void GJK_Simplex_3D::calculateNormals()
+{
+	//normals of all 3 triangles-----------------------------------//
+	Vector3 new_a = newPoint - vertices[0];
+	Vector3 new_b = newPoint - vertices[1];
+	Vector3 new_c = newPoint - vertices[2];
+
+	//newB and newC are the same
+	new_ab_normal = new_a.Cross(new_b);
+
+	if (new_ab_normal.IsZero())	//if is zero, normal same as triangle normal
+	{
+		edge1 = vertices[1] - vertices[0];
+		edge2 = vertices[2] - vertices[0];
+		new_ab_normal = edge2.Cross(edge1);
+	}
+
+	if (new_ab_normal.Dot(-vertices[0]) < 0.f) new_ab_normal *= -1.f;
+	new_ab_normal.Normalize();
+
+	new_ac_normal = new_a.Cross(new_c);
+
+	if (new_ac_normal.IsZero())	//if is zero, normal same as triangle normal
+	{
+		edge1 = vertices[1] - vertices[0];
+		edge2 = vertices[2] - vertices[0];
+		new_ac_normal = edge2.Cross(edge1);
+	}
+
+	if (new_ac_normal.Dot(-vertices[0]) < 0.f) new_ac_normal *= -1.f;
+	new_ac_normal.Normalize();
+
+	new_bc_normal = new_b.Cross(new_c);
+
+	if (new_bc_normal.IsZero())	//if is zero, normal same as triangle normal
+	{
+		edge1 = vertices[1] - vertices[0];
+		edge2 = vertices[2] - vertices[0];
+		new_bc_normal = edge2.Cross(edge1);
+	}
+
+	if (new_bc_normal.Dot(-vertices[0]) < 0.f) new_bc_normal *= -1.f;
+	new_bc_normal.Normalize();
+
+	rootDir = -newPoint;
+
+	new_ab_Dot = new_ab_normal.Dot(rootDir);
+	new_ac_Dot = new_ac_normal.Dot(rootDir);
+	new_bc_Dot = new_bc_normal.Dot(rootDir);
+}
+
+/*********************************************************************************************************
 start the GJK search
 Get the initial 3 points
 /*********************************************************************************************************/
@@ -433,11 +487,11 @@ void GJK_Simplex_3D::GetClosestPoints(CD_Polygon_3D& A, CD_Polygon_3D& B)
 		{
 			closestPoint = closestPointToOrigin(vertices[0], vertices[1], vertices[2]);
 			closestDist = closestPoint.Length();
-			
-			/*if (simplexMesh)
+
+			if (simplexMesh)
 				delete simplexMesh;
 			simplexMesh = new Mesh();
-			simplexMesh->Init_Triangle(vertices, Color(109, 242, 236), Color(71, 191, 185));*/
+			simplexMesh->Init_Triangle(vertices, Color(109, 242, 236), Color(71, 191, 185));
 
 			break;
 		}
@@ -452,155 +506,103 @@ void GJK_Simplex_3D::GetClosestPoints(CD_Polygon_3D& A, CD_Polygon_3D& B)
 		float new_ac_mag = new_ac.LengthSquared();
 		float new_bc_mag = new_bc.LengthSquared();
 
-		//no similar magnitude---------------------------------------------//
-		if (new_ab_mag != new_ac_mag && new_ab_mag != new_bc_mag && new_ac_mag != new_bc_mag)
-		//if (!new_ab.Same(new_ac) && !new_ab.Same(new_bc) && !new_ac.Same(new_bc)) (WRONG!)
+		//shortest magnitude found-----------------------------------------//
+		if (new_ab_mag < new_ac_mag && new_ab_mag < new_bc_mag)	//AB shortest
 		{
-			//get the new dir
-			if (new_ab_mag < new_ac_mag && new_ab_mag < new_bc_mag)
+			dir = -new_ab;
+			vertices[2] = newPoint;	//remove C
+			vertReplaced = 2;
+		}
+		else if (new_ac_mag < new_ab_mag && new_ac_mag < new_bc_mag)	//AC shortest
+		{
+			dir = -new_ac;
+			vertices[1] = newPoint;	//remove B
+			vertReplaced = 1;
+		}
+		else if (new_bc_mag < new_ab_mag && new_bc_mag < new_ac_mag)	//BC shortest
+		{
+			dir = -new_bc;
+			vertices[0] = newPoint;	//remove A
+			vertReplaced = 0;
+		}
+		else if (new_ab_mag == new_ac_mag && new_ab_mag == new_bc_mag && new_ac_mag == new_bc_mag)	//all same
+		{
+			calculateNormals();
+
+			if (new_ab_Dot > new_ac_Dot && new_ab_Dot > new_bc_Dot)	//AB closest
 			{
-				dir = -new_ab;
-				vertices[2] = newPoint;	//remove C
+				//cout << "1" << endl;
+				vertices[2] = newPoint;	//C is the furthest
 				vertReplaced = 2;
 			}
-			else if (new_ac_mag < new_ab_mag && new_ac_mag < new_bc_mag)
+			else if (new_ac_Dot > new_ab_Dot && new_ac_Dot > new_bc_Dot)	//AC closest
 			{
-				dir = -new_ac;
-				vertices[1] = newPoint;	//remove B
+				//cout << "2" << endl;
+				vertices[1] = newPoint;	//B is the furthest
 				vertReplaced = 1;
 			}
-			else if (new_bc_mag < new_ab_mag && new_bc_mag < new_ac_mag)
+			else	//BC closest
 			{
-				dir = -new_bc;
-				vertices[0] = newPoint;	//remove A
+				//cout << "3" << endl;
+				vertices[0] = newPoint;	//A is the furthest
 				vertReplaced = 0;
 			}
+
+			dir = -new_ab;	//-new_bc & -new_ac are the same
 		}
-		else
+		else //2 of them are the same, and also the shortest (proven in the first 3 checks)
 		{
-			//the root dir-------------------------------------------------//
-			Vector3 rootDir = -newPoint;
+			calculateNormals();
 
-			//normals of all 3 triangles-----------------------------------//
-			Vector3 new_a = newPoint - vertices[0];
-			Vector3 new_b = newPoint - vertices[1];
-			Vector3 new_c = newPoint - vertices[2];
-
-			//newB and newC are the same
-			Vector3 new_ab_normal = new_a.Cross(new_b);
-
-			if (new_ab_normal.IsZero())	//if is zero, normal same as triangle normal
-			{
-				edge1 = vertices[1] - vertices[0];
-				edge2 = vertices[2] - vertices[0];
-				new_ab_normal = edge2.Cross(edge1);
-			}
-
-			if (new_ab_normal.Dot(-vertices[0]) < 0.f) new_ab_normal *= -1.f;
-			new_ab_normal.Normalize();
-
-			Vector3 new_ac_normal = new_a.Cross(new_c);
-
-			if (new_ac_normal.IsZero())	//if is zero, normal same as triangle normal
-			{
-				edge1 = vertices[1] - vertices[0];
-				edge2 = vertices[2] - vertices[0];
-				new_ac_normal = edge2.Cross(edge1);
-			}
-
-			if (new_ac_normal.Dot(-vertices[0]) < 0.f) new_ac_normal *= -1.f;
-			new_ac_normal.Normalize();
-
-			Vector3 new_bc_normal = new_b.Cross(new_c);
-
-			if (new_bc_normal.IsZero())	//if is zero, normal same as triangle normal
-			{
-				edge1 = vertices[1] - vertices[0];
-				edge2 = vertices[2] - vertices[0];
-				new_bc_normal = edge2.Cross(edge1);
-			}
-
-			if (new_bc_normal.Dot(-vertices[0]) < 0.f) new_bc_normal *= -1.f;
-			new_bc_normal.Normalize();
-
-			//biggest dot product means closest
-			//(no such thing as negative dot product since normal will always
-			//point towards origin)
-
-			//All are the same dist----------------------------------------//
-			if (new_ab_mag == new_ac_mag && new_ab_mag == new_bc_mag && new_ac == new_bc_mag)
-			{
-				float new_ab_Dot = new_ab_normal.Dot(rootDir);
-				float new_ac_Dot = new_ac_normal.Dot(rootDir);
-				float new_bc_Dot = new_bc_normal.Dot(rootDir);
-
-				if (new_ab_Dot > new_ac_Dot && new_ab_Dot > new_bc_Dot)	//AB closest
-				{
-					vertices[2] = newPoint;	//C is the furthest
-					vertReplaced = 2;
-				}
-				else if (new_ac_Dot > new_ab_Dot && new_ac_Dot > new_bc_Dot)	//AC closest
-				{
-					vertices[1] = newPoint;	//B is the furthest
-					vertReplaced = 1;
-				}
-				else	//BC closest
-				{
-					vertices[0] = newPoint;	//A is the furthest
-					vertReplaced = 0;
-				}
-
-				dir = -new_ab;	//-new_bc & -new_ac are the same
-			}
-
-			//AB and BC same dist------------------------------------------//
-			else if (new_ab_mag == new_bc_mag)
+			//AB and BC equal and shortest---------------------------------//
+			if (new_ab_mag == new_bc_mag)
 			{
 				if (new_ab_normal.Dot(rootDir) > new_bc_normal.Dot(rootDir))	//AB closer
 				{
+					//cout << "4" << endl;
 					vertices[2] = newPoint;	//C is the furthest
 					vertReplaced = 2;
 				}
 				else //BC closer
 				{
+					//cout << "5" << endl;
 					vertices[0] = newPoint;	//A is the furthest
 					vertReplaced = 0;
 				}
-
 				dir = -new_ab;	//-new_bc is the same
 			}
-
-			//AB and AC same dist------------------------------------------//
+			//AB and AC equal and shortest---------------------------------//
 			else if (new_ab_mag == new_ac_mag)
 			{
 				if (new_ab_normal.Dot(rootDir) > new_ac_normal.Dot(rootDir))	//AB closer
 				{
+					//cout << "6" << endl;
 					vertices[2] = newPoint;	//C is the furthest
 					vertReplaced = 2;
 				}
 				else //AC closer
 				{
+					//cout << "7" << endl;
 					vertices[1] = newPoint;	//B is the furthest
 					vertReplaced = 1;
 				}
-
 				dir = -new_ab;	//-new_ac is the same
 			}
-
-			//BC and AC same dist------------------------------------------//
+			//BC and AC equal and shortest---------------------------------//
 			else
 			{
 				if (new_bc_normal.Dot(rootDir) > new_ac_normal.Dot(rootDir))	//BC closer
 				{
+					//cout << "8" << endl;
 					vertices[0] = newPoint;	//A is the furthest
 					vertReplaced = 0;
 				}
 				else //AC closer
 				{
+					//cout << "9" << endl;
 					vertices[1] = newPoint;	//B is the furthest
 					vertReplaced = 1;
 				}
-
 				dir = -new_bc;	//-new_ac is the same
 			}
 		}
@@ -648,10 +650,10 @@ void GJK_Simplex_3D::GetClosestPoints(CD_Polygon_3D& A, CD_Polygon_3D& B)
 				closestDist = sqrt(shortestDist);
 				infinite_loop = true;
 
-				/*if (simplexMesh)
+				if (simplexMesh)
 					delete simplexMesh;
 				simplexMesh = new Mesh();
-				simplexMesh->Init_Triangle(vertices, Color(109, 242, 236), Color(71, 191, 185));*/
+				simplexMesh->Init_Triangle(vertices, Color(109, 242, 236), Color(71, 191, 185));
 
 				break;
 			}
@@ -695,13 +697,13 @@ void GJK_Simplex_3D::Draw()
 	//CU::view.Pre_DrawMesh(vertices[0], Vector3(10, 1, 10), CU::sphere_red);
 	//CU::sphere_red->Draw();
 
-	//point 1: blue
-	CU::view.Pre_DrawMesh(shapeA_closestPt, Vector3(10, 10, 10), CU::sphere_blue);
-	CU::sphere_blue->Draw();
+	////point 1: blue
+	//CU::view.Pre_DrawMesh(shapeA_closestPt, Vector3(10, 10, 10), CU::sphere_blue);
+	//CU::sphere_blue->Draw();
 
-	//point 2: green
-	CU::view.Pre_DrawMesh(shapeB_closestPt, Vector3(10, 10, 10), CU::sphere_green);
-	CU::sphere_green->Draw();
+	////point 2: green
+	//CU::view.Pre_DrawMesh(shapeB_closestPt, Vector3(10, 10, 10), CU::sphere_green);
+	//CU::sphere_green->Draw();
 
 	////last_newPoint: yellow
 	//CU::view.Pre_DrawMesh(edges_intersectPt[0], Vector3(10, 10, 10), CU::sphere_yellow);
@@ -716,18 +718,10 @@ void GJK_Simplex_3D::Draw()
 	//	Vector3(len, len, len), CU::line_purple);
 	//CU::line_purple->Draw();
 
-	////MD
-	//for (int i = 0; i < 64; ++i)
-	//{
-	//	/*if (i == 32)
-	//	{
-	//		CU::view.Pre_DrawMesh(MD_points[i], Vector3(5, 5, 5), CU::sphere_red);
-	//		CU::sphere_red->Draw();
-	//	}
-	//	else
-	//	{*/
-	//		CU::view.Pre_DrawMesh(MD_points[i], Vector3(5, 5, 5), CU::sphere_dark_green);
-	//		CU::sphere_dark_green->Draw();
-	//	//}
-	//}
+	//MD
+	for (int i = 0; i < 64; ++i)
+	{
+		CU::view.Pre_DrawMesh(MD_points[i], Vector3(5, 5, 5), CU::sphere_dark_green);
+		CU::sphere_dark_green->Draw();
+	}
 }

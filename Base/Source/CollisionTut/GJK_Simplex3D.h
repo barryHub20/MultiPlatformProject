@@ -26,6 +26,9 @@ public:
 	bool infinite_loop;
 	float closestDist;
 	Vector3 closestPoint;
+	Vector3 rootDir;
+	Vector3 new_ab_normal, new_ac_normal, new_bc_normal;
+	float new_ab_Dot, new_ac_Dot, new_bc_Dot;
 
 	//closest points-------------------------------------------------------//
 	float lambda1, lambda2, lambda3;
@@ -67,6 +70,7 @@ public:
 	//modifies class variables
 	Vector3 closestPointToOrigin(Vector3 vert0, Vector3 vert1, Vector3 vert2);
 	Vector3 NonIntersection(Vector3 vert0, Vector3 vert1, Vector3 vert2);
+	void calculateNormals();
 	static Vector3 closestPointToOrigin_AB(Vector3 A, Vector3 B);
 	static Vector3 closestPointToOrigin_AB(Vector3 origin, Vector3 A, Vector3 B);
 
