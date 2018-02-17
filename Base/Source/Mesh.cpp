@@ -546,35 +546,35 @@ void Mesh::Init_Cuboid(Color color, Color color2, Vector3 scale)
 	std::vector<Vertex> vertexList;
 
 	v.position.Set(-scale.x * 0.5f, -scale.y * 0.5f, -scale.z * 0.5f);	//bottom 0
-	v.color.Set(255, 0, 0);
+	v.color = color;
 	vertexList.push_back(v);
 
 	v.position.Set(scale.x * 0.5f, -scale.y * 0.5f, -scale.z * 0.5f);	//bottom 3
-	v.color.Set(0, 150, 0);
+	v.color = color2;
 	vertexList.push_back(v);
 
 	v.position.Set(scale.x * 0.5f, scale.y * 0.5f, -scale.z * 0.5f);	//top 3
-	v.color.Set(255, 0, 0);
+	v.color = color;
 	vertexList.push_back(v);
 
 	v.position.Set(-scale.x * 0.5f, scale.y * 0.5f, -scale.z * 0.5f);	//top 0
-	v.color.Set(0, 150, 0);
+	v.color = color2;
 	vertexList.push_back(v);
 
 	v.position.Set(-scale.x * 0.5f, -scale.y * 0.5f, scale.z * 0.5f);	//bottom 1
-	v.color.Set(255, 0, 0);
+	v.color = color;
 	vertexList.push_back(v);
 
 	v.position.Set(scale.x * 0.5f, -scale.y * 0.5f, scale.z * 0.5f);	//bottom 2
-	v.color.Set(0, 150, 0);
+	v.color = color2;
 	vertexList.push_back(v);
 
 	v.position.Set(scale.x * 0.5f, scale.y * 0.5f, scale.z * 0.5f);	//top 2
-	v.color.Set(255, 0, 0);
+	v.color = color;
 	vertexList.push_back(v);
 
 	v.position.Set(-scale.x * 0.5f, scale.y * 0.5f, scale.z * 0.5f);	//top 1
-	v.color.Set(0, 150, 0);
+	v.color = color2;
 	vertexList.push_back(v);
 
 	//new cube

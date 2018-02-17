@@ -69,6 +69,7 @@ struct Vector3
 	//Return a copy of this vector, normalized
 	//Throw a divide by zero exception if normalizing a zero vector
 	Vector3 Normalized( void ) const throw( DivideByZero );
+	float Normalize_andLength() throw(DivideByZero);
 	
 	//Normalize this vector and return a reference to it
 	//Throw a divide by zero exception if normalizing a zero vector

@@ -12,15 +12,10 @@ Date: 31/12/17
 class GJK_Simplex_3D
 {
 public:
-	Vector3 MD_points[64];	//36
 
 	//Simplex data---------------------------------------------------------//
-	int total_vertices;
 	Vector3 dir;
-	bool doesNotContain;
-	Vector3 vertices[3];
-	Vector3 newPoint, prev_newPoint;
-	Mesh* simplexMesh;
+	Vector3 vertices[4];	//newPoint: index 3
 	bool infinite_loop;
 	float closestDist;
 	Vector3 closestPoint;
@@ -38,6 +33,8 @@ public:
 	int collect_suppIdx[8][6];
 
 	//closest points-------------------------------------------------------//
+	Vector3 v0, v1, v2;
+	float d00, d01, d11, d20, d21, denom;
 	float lambda1, lambda2, lambda3;
 	int shapeA_MDpoint, shapeB_MDpoint;
 	int sA_pA, sB_pA;
@@ -66,26 +63,25 @@ public:
 	//collision response---------------------------------------------------//
 	bool noCollision;
 	float t, t_tracker;	//t_tracker: tracks the value of t over all iterations
-
+	
 	//utilities=======================================================================//
-	//get return value
+	//min dist utilities---------------------------------------------------//
 	int GetSupportingVertice(CD_Polygon_3D& poly, Vector3 dir);
 	int GetMin(float a, float b, float c);
 	Vector3 GetNewLast(Vector3 dir, CD_Polygon_3D& A, CD_Polygon_3D& B);
-	void BarycentricCoord(Vector3 p, Vector3 a, Vector3 b, Vector3 c, Vector3& retVal);
-
-	//modifies class variables
-	Vector3 closestPointToOrigin(Vector3 vert0, Vector3 vert1, Vector3 vert2);
-	Vector3 NonIntersection(Vector3 vert0, Vector3 vert1, Vector3 vert2);
+	Vector3 closestPointToOrigin(int v0_idx, int v1_idx, int v2_idx);
+	Vector3 NonIntersection(int v0_idx, int v1_idx, int v2_idx);
 	void calculateNormals();
 	static Vector3 closestPointToOrigin_AB(Vector3 A, Vector3 B);
-	static Vector3 closestPointToOrigin_AB(Vector3 origin, Vector3 A, Vector3 B);
 
-	//angular response
-	void TransformShape(CD_Polygon_3D& shape, Vector3 vel, float rotAngle, float t);
+	//closest points utilities---------------------------------------------//
+	void BarycentricCoord(Vector3 p, Vector3 a, Vector3 b, Vector3 c, Vector3& retVal);
+
+	//angular response-----------------------------------------------------//
+	void TransformShape(CD_Polygon_3D& shape, float yaw, float pitch, Vector3 vel, float t);
 	void SetShape_ToAbsoute(CD_Polygon_3D& projected, CD_Polygon_3D& main);
 
-	//core
+	//core============================================================================//
 	void Reset();
 	void computeClosestPoints(CD_Polygon_3D& A, CD_Polygon_3D& B);
 

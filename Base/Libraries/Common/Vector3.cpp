@@ -402,6 +402,32 @@ Vector3 Vector3::Normalized( void ) const throw( DivideByZero )
 /******************************************************************************/
 /*!
 \brief
+Return the dir and len of this vector
+
+\param dir
+	vec to store direction
+\param len
+	vec to store length
+\exception Divide by zero
+	thrown if normalizing a zero vector
+\return
+	Length
+*/
+/******************************************************************************/
+float Vector3::Normalize_andLength() throw(DivideByZero)
+{
+	float len = Length();
+	if (len <= Math::EPSILON && -len <= Math::EPSILON)
+		throw DivideByZero();
+	x /= len;
+	y /= len;
+	z /= len;
+	return len;
+}
+
+/******************************************************************************/
+/*!
+\brief
 Normalize this vector and return a reference to it
 
 \param rhs

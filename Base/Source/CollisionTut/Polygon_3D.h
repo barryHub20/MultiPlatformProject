@@ -8,30 +8,43 @@ Collision Tutorial Discrete (CTD)
 
 By default all polygon 3D starts with y=0
 
+Euler to quarternion rotation in world space, not OBJECT SPACE
+yaw (rot Y axis)
+pitch (rot Z axis)
+
 Author: Tan Yie Cher
 Date: 14/10/17
 /***************************************************************************************************************/
 class CD_Polygon_3D
 {
 
-	void DirRecalculate();
+	static void DirRecalculate(float rot_w, float rot_x, float rot_y, float rot_z, Vector3 shapePos, Vector3 dir_prime, Vector3& right, Vector3& up);
+	static void ToQuaternion(float yaw, float pitch, float roll, Vector3 shapePos, float& rot_w, float& rot_x, float& rot_y, float& rot_z,
+		Vector3& dir_prime, Vector3& right, Vector3& up);
+
 public:
 	
 	//main vars---------------------------------------------------------//
-	Vector3 shapePos, shapeScale, original_dir, dir_prime, right, up;
+	Vector3 shapePos, shapeScale, dir_prime, right, up;
+	const static Vector3 original_dir;
 	float yaw, pitch, roll;
-	float w, x, y, z;	//quaternion
-	float rot_w, rot_x, rot_y, rot_z;
 	Vector3 pointList[8];
 	Vector3 pointNormalList[8];
+
+	//quaternion--------------------------------------------------------//
+	static float w, x, y, z;
+	float rot_w, rot_x, rot_y, rot_z;
 
 	//render purposes---------------------------------------------------//
 	Mesh* mesh;
 
-	//projection--------------------------------------------------------//
-	bool projectorShape;	//is this shape meant for projection?
-	Vector3 projDir, projRot;
-	float projMag;
+	//projection (user input)-------------------------------------------//
+	float proj_Yaw_tr;	//tr: this round only, not acculmulative
+	float proj_Pitch_tr;
+	Vector3 proj_Vel_tr;
+
+	//projection (program input)----------------------------------------//
+	float calulatedMag;	//quaternion.w
 	float av;	//angular velocity
 	float r;	//radius
 
@@ -40,16 +53,15 @@ public:
 	~CD_Polygon_3D();
 
 	//Core=============================================================================//
-	void Init(Vector3 shapePos, Vector3 shapeScale, Vector3 dir, bool projectorShape, Color color);
+	void Init(Vector3 shapePos, Vector3 shapeScale, Color color, Color color2);
 	void CopyFrom(CD_Polygon_3D& copyFromMe);
 	void Draw();
 
 	//Transform=======================================================================//
-	void ProjectShape(float projVel_Mag, Vector3 projRot);
-	void ProjectObstacle(float projVel_Mag, Vector3 projRot);
+	void ProjectShape(float proj_Yaw, float proj_Pitch, Vector3 vel);
+	void ProjectShape_Transform(float proj_Yaw, float proj_Pitch, Vector3 vel);
 
 	void RecalculatePoints();
-	void ToQuaternion();
 	
 	void yawRot(float angle);
 	void pitchRot(float angle);
@@ -57,6 +69,7 @@ public:
 
 	void Forward(float dir);
 	void Strafe(float dir);
+	void Translate(Vector3 vel);
 };
 
 #endif
