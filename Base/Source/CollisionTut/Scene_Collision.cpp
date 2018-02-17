@@ -87,7 +87,7 @@ void Scene_Continuous::OBB_V_OBB_3D_Init()
 	poly_3d_2.Init(Vector3(70, 0, 0), Vector3(50, 50, 50), Color(255, 0, 0), Color(0, 150, 0));
 
 	//project poly 1-------------------------------------------------------------//
-	poly_3d_1.ProjectShape(35.f, 15.f, Vector3(70, 0, 0));
+	poly_3d_1.ProjectShape(35.f, 25.f, Vector3(70, 0, 0));
 	poly_3d_2.ProjectShape_Transform(25.f, 0.f, Vector3(0, 0, 0));
 }
 
@@ -129,6 +129,11 @@ void Scene_Continuous::OBB_V_OBB_3D_Update()
 		poly_3d_1.Strafe(-1.f);
 	if (GetAsyncKeyState('H'))
 		poly_3d_1.Strafe(1.f);
+
+	if (GetAsyncKeyState('U'))
+		poly_3d_1.Soar(1.f);
+	if (GetAsyncKeyState('J'))
+		poly_3d_1.Soar(-1.f);
 
 	//actual implementation------------------------------------------------------//
 	poly_3d_1.RecalculatePoints();

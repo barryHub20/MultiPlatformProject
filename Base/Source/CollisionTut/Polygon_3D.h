@@ -69,6 +69,7 @@ public:
 
 	void Forward(float dir);
 	void Strafe(float dir);
+	void Soar(float dir);
 	void Translate(Vector3 vel);
 };
 

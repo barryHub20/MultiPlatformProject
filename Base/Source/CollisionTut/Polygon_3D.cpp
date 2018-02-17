@@ -188,6 +188,12 @@ void CD_Polygon_3D::Strafe(float dir)
 	shapePos += right * dir * speed * CU::dt;
 }
 
+void CD_Polygon_3D::Soar(float dir)
+{
+	float speed = 150.f;
+	shapePos += up * dir * speed * CU::dt;
+}
+
 void CD_Polygon_3D::Translate(Vector3 vel)
 {
 	shapePos += vel;
