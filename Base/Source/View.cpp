@@ -41,7 +41,7 @@ void View::Init()
 	//camera.Init(Vector3(0, 0, 1), Vector3(0, 0, 0), Vector3(0, 1, 0));	//2D
 	//camera.Init(Vector3(0, 0, 1000), Vector3(0, 0, 500), Vector3(0, 1, 0));	//3D
 	//camera.Init(Vector3(-47.6996f, 238.696f, 200.899f), Vector3(-47.485f, 238.004f, 200.21f), Vector3(0.205f, 0.722f, -0.660f));	//3D stuck to pos
-	camera.Init(Vector3(20.2360878f, 238.695999f, 203.629150f), Vector3(20.2745552f, 238.011002f, 202.901627f), Vector3(0.0361672193f, 0.728545904f, -0.684041560f));	//3D stuck to pos
+	camera.Init(Vector3(-84.7776, 238.696, -291.117), Vector3(-84.5819, 238.1, -290.338), Vector3(0.145163, 0.803268, 0.577657));	//3D stuck to pos
 }
 
 /********************************************************************************
