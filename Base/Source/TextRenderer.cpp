@@ -16,8 +16,9 @@ void FreeType_Text::Init()
 	//Load and init font as face---------------------------------------//
     //PC: fonts/
     //Android: sdcard/
-    string mama = CU::assets_path + "fonts/plasdrpe.ttf";
+    string mama = CU::assets_path + "fonts/Minecraftia.ttf";
     const char* address2 = mama.c_str();
+
 	if (FT_New_Face(ft, address2, 0, &minecraft))
 		CU::fuck_flag = true;
 
@@ -31,7 +32,7 @@ void FreeType_Text::Init()
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // Disable byte-alignment restriction
 
 	//For each character, generate a character and store relevant data to Character struct------------------------------------------------//
-	
+
 	bool first = false;
 	for (GLubyte c = 0; c < 128; c++)
 	{
@@ -48,10 +49,12 @@ void FreeType_Text::Init()
 		glBindTexture(GL_TEXTURE_2D, texture);
 
 		//GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid *pixels
+        //https://stackoverflow.com/questions/27430811/text-not-rendering-correctly-opengl-using-freetype2
+        //change the 3rd variable from GL_RED to GL_R8 (Fix for Android glTexImage2D 1282 error)
 		glTexImage2D(
 			GL_TEXTURE_2D,
 			0,
-			GL_RED,	// number of color components in the texture
+			GL_R8,	// number of color components in the texture
 			minecraft->glyph->bitmap.width,	//pixel width
 			minecraft->glyph->bitmap.rows,	//pixel height
 			0,

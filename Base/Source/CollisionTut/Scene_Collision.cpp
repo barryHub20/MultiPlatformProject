@@ -45,15 +45,15 @@ void Scene_Continuous::Tmp_Draw()
 void Scene_Continuous::Tmp_DrawOnScreen()
 {
 	CU::view.SetShader(TEXT_SHADER);
-	CU::view.StartRendering2D_onScreen();
-	ss.str("");
-	ss << "Dist: " << gjk_simplex_3D.closestDist;
-	CU::view.RenderText(ss.str(), Vector2(-190, 130), 1.f, Color(22, 93, 186));
+    CU::view.StartRendering2D_onScreen();
+    ss.str("");
+    ss << "Dist: " << gjk_simplex_3D.closestDist;
+    CU::view.RenderText(ss.str(), Vector2(-200, 130), 0.9f, Color(22, 93, 186));
 
-	//render text
-	ss.str("");
-	ss << "FPS: " << (int)CU::fps;
-	CU::view.RenderText(ss.str(), Vector2(90, 130), 1.f, Color(227, 157, 27));
+    //render text
+    ss.str("");
+    ss << "FPS: " << (int)CU::fps;
+    CU::view.RenderText(ss.str(), Vector2(85, 130), 0.9f, Color(227, 157, 27));
 }
 
 /*********************************************************************************************************

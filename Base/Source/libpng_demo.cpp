@@ -223,8 +223,8 @@ void process_file(void)
 		abort_("[process_file] color_type of input file must be PNG_COLOR_TYPE_RGBA (%d) (is %d)",
 		PNG_COLOR_TYPE_RGBA, png_get_color_type(png_ptr, info_ptr));
 
-	cout << "Height: " << height << endl;
-	cout << "width: " << width << endl;
+	//cout << "Height: " << height << endl;
+	//cout << "width: " << width << endl;
 
 	//process the png---------------------------------------------------------------------------//
 	for (y = 0; y<height; y++)

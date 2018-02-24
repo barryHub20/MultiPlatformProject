@@ -389,6 +389,7 @@ void View::RenderText(string text, Vector2 pos, float yScale, Color color)
 
 		//Pass in texture-----------------------------------------------------//
 		glBindTexture(GL_TEXTURE_2D, ch.textureID);
+		//glBindTexture(GL_TEXTURE_2D, CU::textureList[0]); works in Android??
 		//glUniform1i(text_uText, 0);
 
 		// Update content of VBO memory-----------------------------------------------------//
