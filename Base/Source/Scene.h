@@ -3,7 +3,6 @@
 
 #include "Header.h"
 #include "Transform.h"
-#include "NPC.h"
 
 /***************************************************************************************************************
 Scene framework class

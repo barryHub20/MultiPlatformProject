@@ -4,10 +4,7 @@
 #include "CoreUtilities.h"
 
 //Scenes include here-------------------------//
-#include "Scene_Pathfinding.h"
-#include "Scene_Transformation.h"
-#include "Scene_SAT_Collision.h"
-#include "CollisionTut\Scene_Collision.h"
+#include "Collision\Scene_Collision.h"
 
 /*******************************************************************************************************
 New and improved controller

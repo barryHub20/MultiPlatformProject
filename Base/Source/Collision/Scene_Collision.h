@@ -4,10 +4,8 @@
 #include "Scene.h"
 
 //discrete collision types
-#include "CollisionTut\Polygon.h"
-#include "CollisionTut\Polygon_3D.h"
-#include "CollisionTut\GJK_Simplex2D.h"
-#include "CollisionTut\GJK_Simplex3D.h"
+#include "Collision\Polygon_3D.h"
+#include "Collision\GJK_Simplex3D.h"
 
 /***************************************************************************************************************
 Discrete collision test
@@ -30,9 +28,6 @@ Minkowski Difference start Date: 18/9/17
 /***************************************************************************************************************/
 class Scene_Continuous : public Scene
 {
-	//OBB---------------------------------------//
-	CD_Polygon new_poly1, new_poly1_projected, new_poly1_final, new_poly2;
-
 	//GJK 3D------------------------------------//
 	CD_Polygon_3D poly_3d_1, poly_3d_2, poly_3d_1_projected;
 	GJK_Simplex_3D gjk_simplex_3D;
