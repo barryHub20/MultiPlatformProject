@@ -5,6 +5,7 @@
 
 //Scenes include here-------------------------//
 #include "Collision\Scene_Collision.h"
+#include "Voxel\Scene_Voxel.h"
 
 /*******************************************************************************************************
 New and improved controller
