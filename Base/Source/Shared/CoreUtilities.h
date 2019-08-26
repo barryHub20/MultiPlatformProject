@@ -39,7 +39,7 @@ public:
 	static Input_Android input;
 #endif
 
-    static pthread_mutex_t mutex_;
+    //static pthread_mutex_t mutex_;
 
 	static double dt;
 	static float fps;

@@ -1,0 +1,288 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Platform_Independent">
+      <UniqueIdentifier>{ca80ab9e-f981-43b7-81ef-57fa19ba1153}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform_Independent\View">
+      <UniqueIdentifier>{61b185a6-c707-4de3-8359-75b1f2f40b9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform_Independent\Useful Utilities">
+      <UniqueIdentifier>{b81559ff-44ed-4eec-b7d3-f125f6ea2a52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform_Independent\Transform">
+      <UniqueIdentifier>{1890f749-5f76-4eee-bc20-9c19f950600d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform_Independent\Texture">
+      <UniqueIdentifier>{860c53f5-15f2-4457-a68c-1fa7d56f4ab1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform_Independent\Text">
+      <UniqueIdentifier>{bdfb59c9-0176-4b9d-8751-f0d151aa5b43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform_Independent\Shader">
+      <UniqueIdentifier>{64255710-72de-429f-b0ff-19c90982d7dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform_Independent\Scenes">
+      <UniqueIdentifier>{dc94ab43-909f-44c5-b403-cc7a46d18570}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform_Independent\Input">
+      <UniqueIdentifier>{e655d028-eec1-4d80-8e32-287060f30e1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform_Independent\Mesh">
+      <UniqueIdentifier>{36b2e016-b103-42ba-8f24-a8f9ba2bd127}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform_Independent\Controller">
+      <UniqueIdentifier>{1ddbacb8-6c95-4c28-bb2c-7ca1b4e6d15c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform_Independent\Common">
+      <UniqueIdentifier>{9bd537b0-5edc-4d55-a999-0da4c541a79e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform_Independent\Camera">
+      <UniqueIdentifier>{cf3ca206-b50e-46f3-9747-544ff87d14f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform_Independent\Asset_Management">
+      <UniqueIdentifier>{cb656598-d653-466d-8667-574331c87929}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform_PC">
+      <UniqueIdentifier>{c1ec958a-f186-4e9e-a782-3c757bc90aff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform_PC\Controller">
+      <UniqueIdentifier>{15981111-9e81-43fe-a078-bb71397ba987}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform_PC\Input">
+      <UniqueIdentifier>{0432eed1-9602-47eb-88b3-e203c817ce3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform_PC\Shader">
+      <UniqueIdentifier>{43f014bb-c03a-49d7-bae3-58501004b927}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform_PC\Timer">
+      <UniqueIdentifier>{558c9e2d-7d2e-40f5-a719-0c57a831c332}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shared">
+      <UniqueIdentifier>{990779cf-0971-4349-b77a-f76be6f90366}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform_Independent\Collision">
+      <UniqueIdentifier>{4725fbad-d045-4c4e-99f3-f280e2bd16c4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Source\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Base\Source\AssetManager.cpp">
+      <Filter>Platform_Independent\Asset_Management</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Base\Source\Camera.cpp">
+      <Filter>Platform_Independent\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Base\Source\FPS_Camera.cpp">
+      <Filter>Platform_Independent\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Base\Libraries\Common\MathUtility.cpp">
+      <Filter>Platform_Independent\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Base\Libraries\Common\MatrixStack.cpp">
+      <Filter>Platform_Independent\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Base\Libraries\Common\Mtx44.cpp">
+      <Filter>Platform_Independent\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Base\Libraries\Common\Vector2.cpp">
+      <Filter>Platform_Independent\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Base\Libraries\Common\Vector3.cpp">
+      <Filter>Platform_Independent\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Base\Source\Controller.cpp">
+      <Filter>Platform_Independent\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Base\Source\Input.cpp">
+      <Filter>Platform_Independent\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Base\Source\GridMesh.cpp">
+      <Filter>Platform_Independent\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Base\Source\Mesh.cpp">
+      <Filter>Platform_Independent\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Base\Source\Vertex.cpp">
+      <Filter>Platform_Independent\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Base\Source\Scene.cpp">
+      <Filter>Platform_Independent\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Base\Source\Voxel\Scene_Voxel.cpp">
+      <Filter>Platform_Independent\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Base\Source\Collision\Scene_Collision.cpp">
+      <Filter>Platform_Independent\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Base\Source\TextRenderer.cpp">
+      <Filter>Platform_Independent\Text</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Base\Source\TextureLoader.cpp">
+      <Filter>Platform_Independent\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Base\Source\Transform.cpp">
+      <Filter>Platform_Independent\Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Base\Source\UsefulUtils.cpp">
+      <Filter>Platform_Independent\Useful Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Base\Source\View.cpp">
+      <Filter>Platform_Independent\View</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ControllerPC.cpp">
+      <Filter>Platform_PC\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Input_PC.cpp">
+      <Filter>Platform_PC\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\timer.cpp">
+      <Filter>Platform_PC\Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ShaderPC.cpp">
+      <Filter>Platform_PC\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Base\Source\Shared\CoreUtilities.cpp">
+      <Filter>Shared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Base\Source\Shared\Header.cpp">
+      <Filter>Shared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Base\Source\Collision\GJK_Simplex3D.cpp">
+      <Filter>Platform_Independent\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Base\Source\Collision\Polygon_3D.cpp">
+      <Filter>Platform_Independent\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Base\Source\libpng_demo.cpp">
+      <Filter>Platform_Independent\Texture</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\..\Base\Source\AssetManager.h">
+      <Filter>Platform_Independent\Asset_Management</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Base\Source\Camera.h">
+      <Filter>Platform_Independent\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Base\Source\FPS_Camera.h">
+      <Filter>Platform_Independent\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Base\Libraries\Common\MathUtility.h">
+      <Filter>Platform_Independent\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Base\Libraries\Common\MatrixStack.h">
+      <Filter>Platform_Independent\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Base\Libraries\Common\Mtx44.h">
+      <Filter>Platform_Independent\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Base\Libraries\Common\MyMath.h">
+      <Filter>Platform_Independent\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Base\Libraries\Common\Vector2.h">
+      <Filter>Platform_Independent\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Base\Libraries\Common\Vector3.h">
+      <Filter>Platform_Independent\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Base\Source\Controller.h">
+      <Filter>Platform_Independent\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Base\Source\Input.h">
+      <Filter>Platform_Independent\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Base\Source\GridMesh.h">
+      <Filter>Platform_Independent\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Base\Source\Mesh.h">
+      <Filter>Platform_Independent\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Base\Source\Vertex.h">
+      <Filter>Platform_Independent\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Base\Source\Scene.h">
+      <Filter>Platform_Independent\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Base\Source\Voxel\Scene_Voxel.h">
+      <Filter>Platform_Independent\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Base\Source\Collision\Scene_Collision.h">
+      <Filter>Platform_Independent\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Base\Source\shader.hpp">
+      <Filter>Platform_Independent\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Base\Source\TextRenderer.h">
+      <Filter>Platform_Independent\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Base\Source\TextureLoader.h">
+      <Filter>Platform_Independent\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Base\Source\Transform.h">
+      <Filter>Platform_Independent\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Base\Source\UsefulUtils.h">
+      <Filter>Platform_Independent\Useful Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Base\Source\View.h">
+      <Filter>Platform_Independent\View</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ControllerPC.h">
+      <Filter>Platform_PC\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Input_PC.h">
+      <Filter>Platform_PC\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shader\Fragment.h">
+      <Filter>Platform_PC\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shader\Fragment_text.h">
+      <Filter>Platform_PC\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shader\Fragment_voxel.h">
+      <Filter>Platform_PC\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shader\Vertex.h">
+      <Filter>Platform_PC\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shader\Vertex_text.h">
+      <Filter>Platform_PC\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shader\Vertex_voxel.h">
+      <Filter>Platform_PC\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\timer.h">
+      <Filter>Platform_PC\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Base\Source\Shared\CoreUtilities.h">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Base\Source\Shared\Header.h">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Base\Source\Collision\GJK_Simplex3D.h">
+      <Filter>Platform_Independent\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Base\Source\Collision\Polygon_3D.h">
+      <Filter>Platform_Independent\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Base\Source\libpng_demo.h">
+      <Filter>Platform_Independent\Texture</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

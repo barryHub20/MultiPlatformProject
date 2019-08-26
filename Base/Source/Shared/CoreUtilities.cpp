@@ -15,7 +15,7 @@ double CU::dt = 0.0;
 float CU::fps = 0.f;
 string CU::assets_path;
 bool CU::initialized_resources = false;
-pthread_mutex_t CU::mutex_;
+//pthread_mutex_t CU::mutex_;
 
 Mesh* CU::circle_green;
 Mesh* CU::circle_gray;
@@ -58,7 +58,7 @@ void CU::Init()
     initialized_resources = true;
 
 #if CURR_PLAT_PC
-	assets_path = "../../../Base/Assets/";
+	assets_path = "../../../../../Base/Assets/";
 #endif
 #if CURR_PLAT_ANDROID
 	//assets_paths[ANDROID_PLAT] = "/sdcard/";	//external storage
@@ -135,7 +135,7 @@ void CU::Init()
 	sphere_yellow->Init_Sphere(Color(255, 255, 0), 36, 36, 0.5f);
 	axes->Init_Axes();
 
-	pthread_mutex_init(&mutex_, NULL);
+	//pthread_mutex_init(&mutex_, NULL);
 
 	view.Init();
 	input.Init();
@@ -257,7 +257,7 @@ void CU::Exit()
 	for (int i = 0; i < TOTAL_TEXTURES; ++i)
 		glDeleteTextures(1, &textureList[i]);
 	
-	pthread_mutex_destroy(&mutex_);
+	//pthread_mutex_destroy(&mutex_);
 	delete circle_green;
 	delete circle_gray;
 	delete circle_red;

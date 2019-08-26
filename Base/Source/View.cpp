@@ -74,8 +74,8 @@ void View::Init_Shaders()
 {
 #if CURR_PLAT_PC
 		//Basics shader-------------------------------------------------------------------------//
-		shaderProgramList[BASIC_SHADER] = LoadShaders("Shader//Vertex.h", "Shader//Fragment.h");
-		shaderProgramList[TEXT_SHADER] = LoadShaders("Shader//Vertex_text.h", "Shader//Fragment_text.h");
+		shaderProgramList[BASIC_SHADER] = LoadShaders("../../Shader/Vertex.h", "../../Shader/Fragment.h");
+		shaderProgramList[TEXT_SHADER] = LoadShaders("../../Shader/Vertex_text.h", "../../Shader/Fragment_text.h");
 #endif
 #if CURR_PLAT_ANDROID
 		//Load shader "/ is auto binded to asset folder)
@@ -130,7 +130,7 @@ void View::ClearScreen()
 	if (CU::fuck_flag)
 		glClearColor(1, 0, 0, 1.f);
 	else
-		glClearColor(1, 1, 1, 1.f);
+		glClearColor(0, 0, 1, 1.f);
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_DEPTH_TEST);

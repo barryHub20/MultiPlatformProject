@@ -1,11 +1,9 @@
 *.zip
-*.sln
 *.db
-Windows-Wrapper/Multi-Platform/.vs/
-Windows-Wrapper/Multi-Platform/Debug/
-Windows-Wrapper/Multi-Platform/Multi-Platform/Debug/
-*.filters
-*.vcxproj
-Windows-Wrapper/Multi-Platform/Multi-Platform.VC.VC.opendb
-Android-Wrapper/MultiPlatformProject/
 Archive/
+Windows-Wrapper/Multi-Platform/Multi-Platform/Project/.vs/
+Windows-Wrapper/Multi-Platform/Multi-Platform/Project/Debug/
+Windows-Wrapper/Multi-Platform/Multi-Platform/Project/Project/Debug/
+Windows-Wrapper/Multi-Platform/Multi-Platform/Project/Project/Release/
+Windows-Wrapper/Multi-Platform/Multi-Platform/Project/Project/x64/
+Windows-Wrapper/Multi-Platform/Multi-Platform/Project/Release/

@@ -1,6 +1,6 @@
 #include "Input_PC.h"
 #include "ControllerPC.h"
-pthread_mutex_t Input_PC::mutex_;
+//pthread_mutex_t Input_PC::mutex_;
 
 static void Key_Callback(GLFWwindow* windows, int key, int scancode, int action, int mods)
 {
@@ -25,7 +25,7 @@ void Input_PC::Init()
 	Input::Init();
 
 	//thread-safe
-	pthread_mutex_init(&mutex_, NULL);
+	//pthread_mutex_init(&mutex_, NULL);
 
 	//Mouse----------------------------------------------------------------------------------//
 	mouse_last_x = mouse_last_y = mouse_current_x = mouse_current_y = mouse_diff_x = mouse_diff_y = 0.0;
@@ -154,24 +154,24 @@ Key down action (thread-safe)
 /*********************************************************************************************************/
 void Input_PC::KeyDownAction(InputState::keycodes keycode)
 {
-	pthread_mutex_lock(&mutex_);
+	//pthread_mutex_lock(&mutex_);
 
 	CU::input.keymapList[keycode] = true;
 	Controller_PC::Instance()->KeyPressed();
 	CU::input.cursor_KeyDown(keycode, 0, Vector2(CU::input.cursorPos.x, CU::input.cursorPos.y), 0);
 
-	pthread_mutex_unlock(&mutex_);
+	//pthread_mutex_unlock(&mutex_);
 }
 
 void Input_PC::KeyUpAction(InputState::keycodes keycode)
 {
-	pthread_mutex_lock(&mutex_);
+	//pthread_mutex_lock(&mutex_);
 
 	CU::input.keymapList[keycode] = false;
 	Controller_PC::Instance()->KeyReleased();
 	CU::input.cursor_KeyUp(keycode, 0, 0);
 
-	pthread_mutex_unlock(&mutex_);
+	//pthread_mutex_unlock(&mutex_);
 }
 
 /*********************************************************************************************************
@@ -179,7 +179,7 @@ exit
 /*********************************************************************************************************/
 void Input_PC::Exit()
 {
-	pthread_mutex_destroy(&mutex_);
+	//pthread_mutex_destroy(&mutex_);
 }
 
 /*********************************************************************************************************

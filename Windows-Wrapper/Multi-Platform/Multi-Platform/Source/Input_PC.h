@@ -4,8 +4,8 @@
 #include "Input.h"
 
 //threading
-#define HAVE_STRUCT_TIMESPEC	//tell p-thread win32 headers we already defined timespec
-#include <pthread.h>
+//#define HAVE_STRUCT_TIMESPEC	//tell p-thread win32 headers we already defined timespec
+//#include <pthread.h>
 
 /***************************************************************************************************************
 Input framework class for PC
@@ -41,7 +41,7 @@ class Input_PC : public Input
 	void KeyCallbackCheck(int key, int action, const int key_define, InputState::keycodes keycode);
 
 	//for synchronization (this class potentially gets called by mutiple threads)
-	static pthread_mutex_t mutex_;
+	//static pthread_mutex_t mutex_;
 
 public:
 
