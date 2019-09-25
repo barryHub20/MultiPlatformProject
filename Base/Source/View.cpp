@@ -8,8 +8,8 @@ GLint View::shaderProgramList[TOTAL_SHADERS];
 //bigger byt still small: 900, 675
 //big screen size: 1000, 750
 //Extra big: 1150, 862.5
-float Screen::SCREEN_WIDTH = 800;	//PC only
-float Screen::SCREEN_HEIGHT = 600;	//PC only
+float Screen::SCREEN_WIDTH = 1000;	//PC only
+float Screen::SCREEN_HEIGHT = 750;	//PC only
 unsigned short Screen::CAMERA_WIDTH = 800.f;	//camera view size X 
 unsigned short Screen::CAMERA_HEIGHT = 600.f;	//camera view size Y
 float Screen::CAM_X_TO_Y_RATIO = 4.f / 3.f;
@@ -22,6 +22,7 @@ void View::Init()
 {
 	Init_Shaders();
 	Init_Opengl();
+	glCheckError();
 
 	//freetype library
 	Init_Text();
@@ -76,6 +77,7 @@ void View::Init_Shaders()
 		//Basics shader-------------------------------------------------------------------------//
 		shaderProgramList[BASIC_SHADER] = LoadShaders("../../Shader/Vertex.h", "../../Shader/Fragment.h");
 		shaderProgramList[TEXT_SHADER] = LoadShaders("../../Shader/Vertex_text.h", "../../Shader/Fragment_text.h");
+
 #endif
 #if CURR_PLAT_ANDROID
 		//Load shader "/ is auto binded to asset folder)
@@ -130,7 +132,7 @@ void View::ClearScreen()
 	if (CU::fuck_flag)
 		glClearColor(1, 0, 0, 1.f);
 	else
-		glClearColor(0, 0, 1, 1.f);
+		glClearColor(0, 1, 0, 1.f);
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_DEPTH_TEST);
