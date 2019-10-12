@@ -53,6 +53,7 @@ public:
 	FreeType_Text textRenderer;
 
 	//Text shaders, DOES NOT SHARE SAME ATTRIBUTES!!!!
+	GLuint text_VAO;	//PC version
 	GLuint text_VBO;	//text data aka mesh
 	GLint text_uMV_Matrix, text_uP_Matrix, text_uColor, text_uText;
 	

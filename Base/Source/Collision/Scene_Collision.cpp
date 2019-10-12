@@ -27,6 +27,7 @@ Update
 void Scene_Continuous::Update()
 {
 	Scene::Update();
+
 	OBB_V_OBB_3D_Update();
 
 	//set basic shader so it starts first later-----------------------------------------------------------------------//
@@ -96,8 +97,8 @@ void Scene_Continuous::OBB_V_OBB_3D_Update()
 	float speed = 150.f * CU::dt;
 
 	//camera---------------------------------------------------------------------//
-	/*CU::view.camera.Update(CU::dt);
-	CU::view.camera.UpdateInput(CU::dt * 2.f);*/
+	CU::view.camera.Update(CU::dt);
+	CU::view.camera.UpdateInput(CU::dt * 2.f);
 	
 	//transformation-------------------------------------------------------------//
 	//if (GetAsyncKeyState('E'))

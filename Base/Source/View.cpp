@@ -95,6 +95,7 @@ void View::Init_Text()
 
 	//Gen attributes and buffer object----------------------------------------------//
 	glGenBuffers(1, &text_VBO);	//buffer data
+	glGenVertexArrays(1, &text_VAO);
 
 	//Buffer-----------------------------------------------//
 	//the 2D quad requires 6 vertices of 4 floats each,
@@ -111,6 +112,7 @@ void View::Exit_Text()
 
 	//text shader VAO and VBO-------------//
 	glDeleteBuffers(1, &text_VBO);
+	glDeleteVertexArrays(1, &text_VAO);
 }
 
 /********************************************************************************
@@ -132,7 +134,7 @@ void View::ClearScreen()
 	if (CU::fuck_flag)
 		glClearColor(1, 0, 0, 1.f);
 	else
-		glClearColor(0, 1, 0, 1.f);
+		glClearColor(1, 1, 1, 1.f);
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_DEPTH_TEST);
@@ -363,6 +365,7 @@ void View::RenderText(string text, Vector2 pos, float yScale, Color color)
 
 	//Bind Texture and VAO-------------------------------------------------------//
 	glActiveTexture(GL_TEXTURE0);
+	glBindVertexArray(text_VAO);
 
 	std::string::const_iterator c;
 	for (c = text.begin(); c != text.end(); c++)
