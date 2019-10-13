@@ -30,7 +30,6 @@ void FreeType_Text::Init()
 	    CU::fuck_flag = true;
 
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // Disable byte-alignment restriction
-	glCheckError();
 
 	//For each character, generate a character and store relevant data to Character struct------------------------------------------------//
 
@@ -80,16 +79,13 @@ void FreeType_Text::Init()
 		//Add new data-------------------------------------------------------------//
 		characters.insert(std::pair<GLchar, TextCharacter>(c, character));
 	}
-	glCheckError();
 
 	glBindTexture(GL_TEXTURE_2D, 0);
-	glCheckError();
 
 	//cleanup-------------------------------------------------------------//
 	FT_Done_Face(minecraft);
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 0); // Enable byte-alignment restriction
 	FT_Done_FreeType(ft);
-	glCheckError();
 }
 
 /******************************************************************************

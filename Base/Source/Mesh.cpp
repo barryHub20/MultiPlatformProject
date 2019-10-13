@@ -673,7 +673,9 @@ void Mesh::Draw()
 	if (meshID != currentMesh)
 	{
 		currentMesh = meshID;
+#if CURR_PLAT_PC
 		glBindVertexArray(VAO);	//PC VERSION
+#endif
 	}
 
 	//ANDROID VERSION: Draw---------------------------------------------------------------//
@@ -708,7 +710,9 @@ void Mesh::Draw_GridMap(unsigned offset, unsigned count)
 	if (meshID != currentMesh)
 	{
 		currentMesh = meshID;
+#if CURR_PLAT_PC
 		glBindVertexArray(VAO);	//PC VERSION
+#endif
 	}
 
 	//ANDROID VERSION: Draw---------------------------------------------------------------//

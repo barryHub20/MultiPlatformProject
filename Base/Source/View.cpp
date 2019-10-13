@@ -22,7 +22,6 @@ void View::Init()
 {
 	Init_Shaders();
 	Init_Opengl();
-	glCheckError();
 
 	//freetype library
 	Init_Text();
@@ -95,7 +94,9 @@ void View::Init_Text()
 
 	//Gen attributes and buffer object----------------------------------------------//
 	glGenBuffers(1, &text_VBO);	//buffer data
+#if CURR_PLAT_PC
 	glGenVertexArrays(1, &text_VAO);
+#endif
 
 	//Buffer-----------------------------------------------//
 	//the 2D quad requires 6 vertices of 4 floats each,
@@ -112,7 +113,9 @@ void View::Exit_Text()
 
 	//text shader VAO and VBO-------------//
 	glDeleteBuffers(1, &text_VBO);
+#if CURR_PLAT_PC
 	glDeleteVertexArrays(1, &text_VAO);
+#endif
 }
 
 /********************************************************************************
@@ -365,7 +368,9 @@ void View::RenderText(string text, Vector2 pos, float yScale, Color color)
 
 	//Bind Texture and VAO-------------------------------------------------------//
 	glActiveTexture(GL_TEXTURE0);
+#if CURR_PLAT_PC
 	glBindVertexArray(text_VAO);
+#endif
 
 	std::string::const_iterator c;
 	for (c = text.begin(); c != text.end(); c++)
