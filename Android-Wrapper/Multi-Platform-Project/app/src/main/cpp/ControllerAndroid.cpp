@@ -189,7 +189,7 @@ Get pointer pos
 ********************************************************************************/
 Vector2 Controller_Android::GetPointerPos(AInputEvent* event, int32_t pointer_index)
 {
-	//pthread_mutex_lock(&mutex_);
+    pthread_mutex_lock(&CU::mutex_);
 
     Vector2 returnVal;
     returnVal.x = AMotionEvent_getX(event, pointer_index);
@@ -202,7 +202,7 @@ Vector2 Controller_Android::GetPointerPos(AInputEvent* event, int32_t pointer_in
     returnVal.x -= new_cameraWidth * 0.5f;
     returnVal.y -= Screen::CAMERA_HEIGHT * 0.5f;
 
-	//pthread_mutex_unlock(&mutex_);
+    pthread_mutex_unlock(&CU::mutex_);
 
     return returnVal;
 }

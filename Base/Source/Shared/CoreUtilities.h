@@ -37,9 +37,9 @@ public:
 #if CURR_PLAT_ANDROID
 	static Input_Android input;
 #endif
-
-    //static pthread_mutex_t mutex_;
-
+#if CURR_PLAT_ANDROID
+    static pthread_mutex_t mutex_;
+#endif
 	static double dt;
 	static float fps;
 

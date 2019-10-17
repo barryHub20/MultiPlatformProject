@@ -1,7 +1,7 @@
-#include <stdio.h>
+#include <cstdio>
 
 #include "Android_Dependencies.h"
-#include <errno.h>
+#include <cerrno>
 #include <android/asset_manager.h>
 
 static int android_read(void* cookie, char* buf, int size) {

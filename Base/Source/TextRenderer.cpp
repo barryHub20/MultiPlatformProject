@@ -10,8 +10,9 @@ Init
 void FreeType_Text::Init()
 {
 	//Init FT library--------------------------------------------------//
-	if (FT_Init_FreeType(&ft))
-        CU::fuck_flag = true;
+	if (FT_Init_FreeType(&ft)) {
+        //CU::fuck_flag = true;
+	}
 
 	//Load and init font as face---------------------------------------//
     //PC: fonts/
@@ -19,15 +20,19 @@ void FreeType_Text::Init()
     string mama = CU::assets_path + "fonts/Minecraftia.ttf";
     const char* address2 = mama.c_str();
 
-	if (FT_New_Face(ft, address2, 0, &minecraft))
+    int fu = FT_New_Face(ft, address2, 0, &minecraft);
+	if (fu == 0x01) {   //0x01 means cannot open resource
 		CU::fuck_flag = true;
+	}
 
 	//extract font size--------------------------------------------------//
     FT_Set_Pixel_Sizes(minecraft, 0, 48);	//setting widh to 0 lets face dynamically cal. width based on given height
 
 	//FT face hosts collection of glyphs, set one of those glyphs as active----------------------------------//
 	if (FT_Load_Char(minecraft, 'X', FT_LOAD_RENDER))	//tell FT to create an 8-bit grayscale bitmap image for us
-	    CU::fuck_flag = true;
+	{
+		//CU::fuck_flag = true;
+	}
 
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // Disable byte-alignment restriction
 
@@ -39,7 +44,7 @@ void FreeType_Text::Init()
 		// Load character glyph 
 		if (FT_Load_Char(minecraft, c, FT_LOAD_RENDER))
 		{
-			CU::fuck_flag = true;
+			//CU::fuck_flag = true;
 			continue;
 		}
 
@@ -96,5 +101,4 @@ void FreeType_Text::Exit()
 	//cleanup textures----------------------------------//
 	for (GLubyte c = 0; c < 128; c++)
 		characters[c].Exit();
-
 }
