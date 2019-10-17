@@ -21,3 +21,12 @@ void Camera::Translate(float x, float y, float z)
 	position += Vector3(x, y, z);
 	target = position + targetOffset;
 }
+
+/**************************** Update ****************************/
+void Camera::Update(double dt)	//constant update
+{
+}
+
+void Camera::UpdateInput(double dt)	//update if inputs available
+{
+}

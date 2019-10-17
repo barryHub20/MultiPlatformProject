@@ -43,11 +43,14 @@ void FPS_Cam::Init(const Vector3& pos, const Vector3& target, const Vector3& up)
 void FPS_Cam::Update(double dt)	//constant update
 {
 	/* Mouse */
+#if CURR_PLAT_PC
 	LookAround(CU::input.getPitch(), CU::input.getYaw(), dt);
+#endif
 } 
 
 void FPS_Cam::UpdateInput(double dt)	//update if inputs available
 {
+#if CURR_PLAT_PC
 	/* Strafe */
 	if (CU::input.isKeyPressed(InputState::A) && !CU::input.isKeyPressed(InputState::D))
 	{
@@ -79,6 +82,7 @@ void FPS_Cam::UpdateInput(double dt)	//update if inputs available
 	{
 		Fly(-dt);
 	}
+#endif
 }
 
 /**************************** Utilities ****************************/

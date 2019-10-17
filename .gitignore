@@ -1,9 +1,26 @@
 *.zip
 *.db
 Archive/
+
+# windows
 Windows-Wrapper/Multi-Platform/Multi-Platform/Project/.vs/
 Windows-Wrapper/Multi-Platform/Multi-Platform/Project/Debug/
 Windows-Wrapper/Multi-Platform/Multi-Platform/Project/Project/Debug/
 Windows-Wrapper/Multi-Platform/Multi-Platform/Project/Project/Release/
 Windows-Wrapper/Multi-Platform/Multi-Platform/Project/Project/x64/
 Windows-Wrapper/Multi-Platform/Multi-Platform/Project/Release/
+
+# android - root
+*.iml
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+
+# android - app
+/build
+Android-Wrapper/Multi-Platform-Project/app/.cxx/
