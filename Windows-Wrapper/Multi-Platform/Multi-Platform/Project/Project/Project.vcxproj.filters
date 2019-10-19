@@ -76,6 +76,9 @@
     <Filter Include="Platform_Independent\Collision">
       <UniqueIdentifier>{4725fbad-d045-4c4e-99f3-f280e2bd16c4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="2D">
+      <UniqueIdentifier>{e7e4acb6-53ab-4902-bb8b-6cc0650436d4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\main.cpp">
@@ -170,6 +173,30 @@
     </ClCompile>
     <ClCompile Include="..\..\..\..\..\Base\Source\libpng_demo.cpp">
       <Filter>Platform_Independent\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Base\Source\2D\Broadphrase.cpp">
+      <Filter>2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Base\Source\2D\NavMesh.cpp">
+      <Filter>2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Base\Source\2D\NPC.cpp">
+      <Filter>2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Base\Source\2D\Pathfinding.cpp">
+      <Filter>2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Base\Source\2D\PathFollower.cpp">
+      <Filter>2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Base\Source\2D\Scene_Pathfinding.cpp">
+      <Filter>2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Base\Source\2D\SpriteRenderer.cpp">
+      <Filter>2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Base\Source\2D\TileMap.cpp">
+      <Filter>2D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -283,6 +310,27 @@
     </ClInclude>
     <ClInclude Include="..\..\..\..\..\Base\Source\libpng_demo.h">
       <Filter>Platform_Independent\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Base\Source\2D\NavMesh.h">
+      <Filter>2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Base\Source\2D\NPC.h">
+      <Filter>2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Base\Source\2D\Pathfinding.h">
+      <Filter>2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Base\Source\2D\PathFollower.h">
+      <Filter>2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Base\Source\2D\Scene_Pathfinding.h">
+      <Filter>2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Base\Source\2D\SpriteRenderer.h">
+      <Filter>2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Base\Source\2D\TileMap.h">
+      <Filter>2D</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
