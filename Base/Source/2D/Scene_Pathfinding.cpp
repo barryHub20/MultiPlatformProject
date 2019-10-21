@@ -173,12 +173,12 @@ void Scene_Pathfinding::Tmp_Draw()
 void Scene_Pathfinding::Tmp_DrawOnScreen()
 {
 	CU::view.SetShader(TEXT_SHADER);
-	CU::view.RenderText("PATHFIND", Vector2(-160, 140), 0.9f, Color(5, 242, 230));
+	CU::view.RenderText("PATHFIND", Vector2(-160, 130), 0.9f, Color(5, 242, 230));
 
 	//render text
 	ss.str("");
 	ss << "FPS: " << (int)CU::fps;
-	CU::view.RenderText(ss.str(), Vector2(110, 150), 0.8f, Color(227, 157, 27));
+	CU::view.RenderText(ss.str(), Vector2(110, 140), 0.8f, Color(227, 157, 27));
 }
 
 /*********************************************************************************************************

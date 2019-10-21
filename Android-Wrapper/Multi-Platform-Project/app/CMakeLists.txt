@@ -122,7 +122,23 @@ add_library( # Sets the name of the library.
 			../../../Base/Source/Voxel/Chunk.h
 			../../../Base/Source/Voxel/Scene_Voxel.cpp
 			../../../Base/Source/Voxel/Scene_Voxel.h
-			
+
+			../../../Base/Source/2D/Broadphrase.cpp
+			../../../Base/Source/2D/NavMesh.cpp
+			../../../Base/Source/2D/NavMesh.h
+			../../../Base/Source/2D/NPC.cpp
+			../../../Base/Source/2D/NPC.h
+			../../../Base/Source/2D/Pathfinding.cpp
+			../../../Base/Source/2D/Pathfinding.h
+			../../../Base/Source/2D/PathFollower.cpp
+			../../../Base/Source/2D/PathFollower.h
+			../../../Base/Source/2D/Scene_Pathfinding.cpp
+			../../../Base/Source/2D/Scene_Pathfinding.h
+			../../../Base/Source/2D/SpriteRenderer.cpp
+			../../../Base/Source/2D/SpriteRenderer.h
+			../../../Base/Source/2D/TileMap.cpp
+			../../../Base/Source/2D/TileMap.h
+
 			#common
 			../../../Base/Libraries/Common/MathUtility.cpp
 			../../../Base/Libraries/Common/MathUtility.h
