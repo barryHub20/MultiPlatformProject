@@ -31,7 +31,7 @@ void Controller::Init()
 	CU::Init();
 
 	//scene---------------------------------------------------//
-	scene = new Scene_Continuous;
+	scene = new Scene_Pathfinding;
 	scene->Init();
 }
 

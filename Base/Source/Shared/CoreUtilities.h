@@ -2,6 +2,8 @@
 #define COREUTIL_H
 
 #include "View.h"
+#include "2D/TileMap.h"
+#include "2D/Pathfinding.h"
 #include "TextureLoader.h"
 #include "AssetManager.h"
 
@@ -29,6 +31,7 @@ public:
 	/******************** uni-platform utilities **********************/
 	static View view;
 	static AssetManager assetMan;
+	static Pathfinding pathfind;
 
 	/******************** platform-dependent utilities **********************/
 #if CURR_PLAT_PC
@@ -81,6 +84,7 @@ public:
 	static Mesh* sphere_yellow;
 	static Mesh* axes;
 	static GLuint textureList[TOTAL_TEXTURES];
+	static TileMap tileMapList[TOTAL_TILEMAPS];
 
 	static Mtx44 mtx[5];
 

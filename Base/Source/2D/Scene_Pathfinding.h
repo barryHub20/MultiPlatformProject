@@ -37,6 +37,7 @@ public:
 	virtual void Init();
 	virtual void Update();
 	virtual void Tmp_Draw();
+	virtual void Tmp_DrawOnScreen();
 	virtual void Exit();
 
 	//key pressed------------------//

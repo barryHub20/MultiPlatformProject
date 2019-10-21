@@ -70,6 +70,10 @@ public:
 //textures------------------------------------------------//
 enum TEXTURE_TYPE
 {
+	TEX_TRAIN,
+	TEX_ZOMBIE,
+	TEX_MALE_HERO,
+	TEX_FEMALE,
 	TEX_INNER_DPAD,
 	TEX_INNER_DPAD_WASD,
 	TEX_OUTER_DPAD,
@@ -79,6 +83,9 @@ enum TEXTURE_TYPE
 //tilemap------------------------------------------------//
 enum TILEMAP_TYPE
 {
+	TM_ZOMBIE,
+	TM_HERO_MALE,
+	TM_FEMALE,
 	TOTAL_TILEMAPS
 };
 

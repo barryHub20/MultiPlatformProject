@@ -4,8 +4,9 @@
 #include "CoreUtilities.h"
 
 //Scenes include here-------------------------//
-#include "Collision\Scene_Collision.h"
-#include "Voxel\Scene_Voxel.h"
+#include "Collision/Scene_Collision.h"
+#include "2D/Scene_Pathfinding.h"
+#include "Voxel/Scene_Voxel.h"
 
 /*******************************************************************************************************
 New and improved controller

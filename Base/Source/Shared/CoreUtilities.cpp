@@ -2,6 +2,7 @@
 
 View CU::view;
 AssetManager CU::assetMan;
+Pathfinding CU::pathfind;
 
 #if CURR_PLAT_PC
 Input_PC CU::input;
@@ -49,6 +50,7 @@ Mesh* CU::sphere_red;
 Mesh* CU::sphere_yellow;
 Mesh* CU::axes;
 GLuint CU::textureList[TOTAL_TEXTURES];
+TileMap CU::tileMapList[TOTAL_TILEMAPS];
 Mtx44 CU::mtx[5];
 
 /*********************************************************************************************************
@@ -67,11 +69,44 @@ void CU::Init()
 #endif
 
 	//gen texture-------------------------------------------------------------------------//
+	textureList[TEX_TRAIN] = TextureLoader::GenTexture(assets_path + "textures/train.png");
+	textureList[TEX_ZOMBIE] = TextureLoader::GenTexture(assets_path + "textures/boxhead_zombie.png");
+	textureList[TEX_MALE_HERO] = TextureLoader::GenTexture(assets_path + "textures/hero_male.png");
+	textureList[TEX_FEMALE] = TextureLoader::GenTexture(assets_path + "textures/spritesheet_male_new.png");
 	textureList[TEX_INNER_DPAD] = TextureLoader::GenTexture(assets_path + "textures/d_pad_inner.png");
 	textureList[TEX_INNER_DPAD_WASD] = TextureLoader::GenTexture(assets_path + "textures/d_pad_inner_wasd.png");
 	textureList[TEX_OUTER_DPAD] = TextureLoader::GenTexture(assets_path + "textures/d_pad_outer.png");
 
 	//tilemap-----------------------------------------------------------------------------//
+	tileMapList[TM_ZOMBIE].Init(8, 8, 0, textureList[TEX_ZOMBIE]);
+	tileMapList[TM_ZOMBIE].AddSet(0, TileMap::SET_TYPE::WALK_E);
+	tileMapList[TM_ZOMBIE].AddSet(1, TileMap::SET_TYPE::WALK_SE);
+	tileMapList[TM_ZOMBIE].AddSet(2, TileMap::SET_TYPE::WALK_S);
+	tileMapList[TM_ZOMBIE].AddSet(3, TileMap::SET_TYPE::WALK_SW);
+	tileMapList[TM_ZOMBIE].AddSet(4, TileMap::SET_TYPE::WALK_W);
+	tileMapList[TM_ZOMBIE].AddSet(5, TileMap::SET_TYPE::WALK_NW);
+	tileMapList[TM_ZOMBIE].AddSet(6, TileMap::SET_TYPE::WALK_N);
+	tileMapList[TM_ZOMBIE].AddSet(7, TileMap::SET_TYPE::WALK_NE);
+
+	tileMapList[TM_HERO_MALE].Init(6, 8, 1, textureList[TEX_MALE_HERO]);
+	tileMapList[TM_HERO_MALE].AddSet(0, TileMap::SET_TYPE::WALK_S);
+	tileMapList[TM_HERO_MALE].AddSet(1, TileMap::SET_TYPE::WALK_W);
+	tileMapList[TM_HERO_MALE].AddSet(2, TileMap::SET_TYPE::WALK_E);
+	tileMapList[TM_HERO_MALE].AddSet(3, TileMap::SET_TYPE::WALK_N);
+	tileMapList[TM_HERO_MALE].AddSet(4, TileMap::SET_TYPE::WALK_SW);
+	tileMapList[TM_HERO_MALE].AddSet(5, TileMap::SET_TYPE::WALK_SE);
+	tileMapList[TM_HERO_MALE].AddSet(6, TileMap::SET_TYPE::WALK_NW);
+	tileMapList[TM_HERO_MALE].AddSet(7, TileMap::SET_TYPE::WALK_NE);
+
+	tileMapList[TM_FEMALE].Init(9, 9, 1, textureList[TEX_FEMALE]);
+	tileMapList[TM_FEMALE].AddSet(0, TileMap::SET_TYPE::WALK_N);
+	tileMapList[TM_FEMALE].AddSet(1, TileMap::SET_TYPE::WALK_W);
+	tileMapList[TM_FEMALE].AddSet(2, TileMap::SET_TYPE::WALK_S);
+	tileMapList[TM_FEMALE].AddSet(3, TileMap::SET_TYPE::WALK_E);
+	tileMapList[TM_FEMALE].AddSet(3, TileMap::SET_TYPE::WALK_NE);
+	tileMapList[TM_FEMALE].AddSet(1, TileMap::SET_TYPE::WALK_NW);
+	tileMapList[TM_FEMALE].AddSet(3, TileMap::SET_TYPE::WALK_SE);
+	tileMapList[TM_FEMALE].AddSet(1, TileMap::SET_TYPE::WALK_SW);
 	
 	//shared meshes-----------------------------------------------------------------------//
 	circle_green = new Mesh();
@@ -141,6 +176,7 @@ void CU::Init()
 #endif
 	view.Init();
 	input.Init();
+	pathfind.Init();
 }
 
 /*********************************************************************************************************
@@ -197,7 +233,7 @@ PC ver. reset
 void CU::DrawOnScreen()
 {
 	//draw input last
-	//input.Draw();
+	input.Draw();
 }
 
 /*********************************************************************************************************
@@ -262,6 +298,7 @@ void CU::Exit()
 #if CURR_PLAT_ANDROID
 	pthread_mutex_destroy(&mutex_);
 #endif
+
 	delete circle_green;
 	delete circle_gray;
 	delete circle_red;

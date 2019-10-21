@@ -189,14 +189,14 @@
     <ClCompile Include="..\..\..\..\..\Base\Source\2D\PathFollower.cpp">
       <Filter>2D</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\Base\Source\2D\Scene_Pathfinding.cpp">
-      <Filter>2D</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\..\Base\Source\2D\SpriteRenderer.cpp">
       <Filter>2D</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\..\Base\Source\2D\TileMap.cpp">
       <Filter>2D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Base\Source\2D\Scene_Pathfinding.cpp">
+      <Filter>Platform_Independent\Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -323,14 +323,14 @@
     <ClInclude Include="..\..\..\..\..\Base\Source\2D\PathFollower.h">
       <Filter>2D</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Base\Source\2D\Scene_Pathfinding.h">
-      <Filter>2D</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\..\..\Base\Source\2D\SpriteRenderer.h">
       <Filter>2D</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\..\Base\Source\2D\TileMap.h">
       <Filter>2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Base\Source\2D\Scene_Pathfinding.h">
+      <Filter>Platform_Independent\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

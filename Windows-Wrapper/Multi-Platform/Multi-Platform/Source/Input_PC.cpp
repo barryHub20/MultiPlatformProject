@@ -39,7 +39,7 @@ void Input_PC::Init()
 	glfwSetCursorPosCallback(Controller_PC::Instance()->Get_windows(), Cursor_Callback);
 
 	//set to fps
-	SetMouse(true);
+	SetMouse(false);
 }
 
 /*********************************************************************************************************

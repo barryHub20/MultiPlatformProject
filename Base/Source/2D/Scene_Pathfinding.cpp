@@ -165,13 +165,15 @@ void Scene_Pathfinding::Tmp_Draw()
 		npc_list[i].TmpDraw();
 
 	//player--------------------------------------------------------------------------------------//
-	CU::quad->AssignTexture(CU::textureList[TEX_STAR]);
+	CU::quad->AssignTexture(CU::textureList[TEX_TRAIN]);
 	CU::view.Pre_DrawMesh(Vector3(test_playerPos.x, test_playerPos.y, 1.f), Vector3(25.f, 25.f, 1.f), CU::quad);
 	CU::quad->Draw();
+}
 
-	//test shader------------------------------------------------------------------------------------//
+void Scene_Pathfinding::Tmp_DrawOnScreen()
+{
 	CU::view.SetShader(TEXT_SHADER);
-	CU::view.RenderText("PATHFIND", Vector2(-60, 140), 0.9f, Color(5, 242, 230));
+	CU::view.RenderText("PATHFIND", Vector2(-160, 140), 0.9f, Color(5, 242, 230));
 
 	//render text
 	ss.str("");

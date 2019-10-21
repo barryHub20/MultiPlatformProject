@@ -1,7 +1,6 @@
 #ifndef PATHFOLLOWER_H
 #define PATHFOLLOWER_H
 
-#include "Header.h"
 #include "NavMesh.h"
 
 /***************************************************************************************************************

@@ -38,10 +38,10 @@ void View::Init()
 	text_uText = glGetUniformLocation(shaderProgramList[TEXT_SHADER], "text");
 
 	//test camera--------------------------------------------------------------------//
-	//camera.Init(Vector3(0, 0, 1), Vector3(0, 0, 0), Vector3(0, 1, 0));	//2D
+	camera.Init(Vector3(0, 0, 0), Vector3(0, 0, -1), Vector3(0, 1, 0));	//2D
 	//camera.Init(Vector3(0, 0, 1000), Vector3(0, 0, 500), Vector3(0, 1, 0));	//3D
 	//camera.Init(Vector3(-47.6996f, 238.696f, 200.899f), Vector3(-47.485f, 238.004f, 200.21f), Vector3(0.205f, 0.722f, -0.660f));	//3D stuck to pos
-	camera.Init(Vector3(-84.7776, 238.696, -291.117), Vector3(-84.5819, 238.1, -290.338), Vector3(0.145163, 0.803268, 0.577657));	//3D stuck to pos
+	//camera.Init(Vector3(-84.7776, 238.696, -291.117), Vector3(-84.5819, 238.1, -290.338), Vector3(0.145163, 0.803268, 0.577657));	//3D stuck to pos
 }
 
 /********************************************************************************
@@ -143,7 +143,7 @@ void View::ClearScreen()
 	glEnable(GL_DEPTH_TEST);
 
 	//start rendering 2D--------------------------------------//
-	StartRendering3D(camera);
+	StartRendering2D(camera);
 }
 
 /********************************************************************************
